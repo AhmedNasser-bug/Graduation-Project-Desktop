@@ -1,0 +1,38 @@
+# Build artifacts
+**/bin/
+**/obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# IDE & user files
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+*.DotSettings.user
+
+# Local runtime databases & edge stores
+*.sqlite
+*.sqlite*
+*.litedb
+*.litedb*
+*.db
+*.db-shm
+*.db-wal
+RuntimeStores/
+
+# Test, audit & scratch outputs
+TestArtifacts/
+TestResults/
+scratch/
+*.trx
+*.coverage
+
+# Web / tooling artifacts
+node_modules/
+dist/
+.vite/
