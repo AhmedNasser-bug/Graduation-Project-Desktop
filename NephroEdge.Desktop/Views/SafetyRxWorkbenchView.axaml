@@ -1,0 +1,917 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:NephroEdge.Desktop.Views"
+             x:Class="NephroEdge.Desktop.Views.SafetyRxWorkbenchView">
+  <UserControl.Styles>
+    <Style Selector="Border.workspace-card">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="14" />
+    </Style>
+
+    <Style Selector="Border.regimen-strip">
+      <Setter Property="Background" Value="#F8FAFC" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="12,7" />
+    </Style>
+
+    <Style Selector="TextBlock.field-label">
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="#475569" />
+      <Setter Property="Margin" Value="0,0,0,2" />
+    </Style>
+
+    <Style Selector="TextBox.clinical.compact-rx">
+      <Setter Property="MinHeight" Value="30" />
+      <Setter Property="Padding" Value="8,5" />
+      <Setter Property="FontSize" Value="12.5" />
+    </Style>
+
+    <Style Selector="ComboBox.clinical.compact-rx">
+      <Setter Property="MinHeight" Value="30" />
+      <Setter Property="Padding" Value="8,4" />
+      <Setter Property="FontSize" Value="12.5" />
+    </Style>
+
+    <Style Selector="TextBlock.section-title">
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Foreground" Value="#0F172A" />
+    </Style>
+
+    <Style Selector="TextBlock.section-subtitle">
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Foreground" Value="#64748B" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style Selector="TextBlock.status-msg">
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="#0F766E" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.status-msg.error-msg">
+      <Setter Property="Foreground" Value="#B91C1C" />
+    </Style>
+
+    <Style Selector="Border.safety-pill">
+      <Setter Property="Background" Value="#F1F5F9" />
+      <Setter Property="BorderBrush" Value="#CBD5E1" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="Padding" Value="12,5" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Border.safety-pill TextBlock">
+      <Setter Property="FontSize" Value="11.5" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Foreground" Value="#334155" />
+    </Style>
+    <Style Selector="Border.safety-pill.approved">
+      <Setter Property="Background" Value="#F0FDFA" />
+      <Setter Property="BorderBrush" Value="#0F766E" />
+    </Style>
+    <Style Selector="Border.safety-pill.approved TextBlock">
+      <Setter Property="Foreground" Value="#0F766E" />
+    </Style>
+    <Style Selector="Border.safety-pill.advisory">
+      <Setter Property="Background" Value="#FFFBEB" />
+      <Setter Property="BorderBrush" Value="#D97706" />
+    </Style>
+    <Style Selector="Border.safety-pill.advisory TextBlock">
+      <Setter Property="Foreground" Value="#92400E" />
+    </Style>
+    <Style Selector="Border.safety-pill.blocked">
+      <Setter Property="Background" Value="#FEF2F2" />
+      <Setter Property="BorderBrush" Value="#DC2626" />
+    </Style>
+    <Style Selector="Border.safety-pill.blocked TextBlock">
+      <Setter Property="Foreground" Value="#B91C1C" />
+    </Style>
+    <Style Selector="Border.safety-pill.pending">
+      <Setter Property="Background" Value="#ECFEFF" />
+      <Setter Property="BorderBrush" Value="#0891B2" />
+    </Style>
+    <Style Selector="Border.safety-pill.pending TextBlock">
+      <Setter Property="Foreground" Value="#0E7490" />
+    </Style>
+
+    <Style Selector="Expander.clean-expander">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Foreground" Value="#0F172A" />
+      <Setter Property="FontSize" Value="13.5" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+  </UserControl.Styles>
+
+  <ScrollViewer x:Name="SafetyRxScrollViewer"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+    <StackPanel Spacing="10" Margin="18,10,18,18">
+
+      <!-- Calm Header -->
+      <Grid ColumnDefinitions="*,12,Auto" MinWidth="0">
+        <StackPanel Grid.Column="0" Spacing="1" MinWidth="0">
+          <TextBlock Text="Orders &amp; Safety"
+                     FontSize="18"
+                     FontWeight="Bold"
+                     Foreground="#0F172A" />
+          <TextBlock Text="{Binding PatientHeaderLabel}"
+                     FontSize="12"
+                     Foreground="#64748B"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <WrapPanel Grid.Column="2"
+                   Orientation="Horizontal"
+                   VerticalAlignment="Center">
+          <Border x:Name="SafetyStatusPillBorder"
+                  Classes="safety-pill"
+                  Classes.approved="{Binding IsSafetyApproved}"
+                  Classes.advisory="{Binding IsSafetyAdvisory}"
+                  Classes.blocked="{Binding IsSafetyBlocked}"
+                  Classes.pending="{Binding IsSafetyPending}"
+                  PointerPressed="OnSafetyPillPointerPressed"
+                  Cursor="Hand"
+                  Margin="0,0,8,0"
+                  ToolTip.Tip="Click to view clinical reasoning and safety guidelines">
+            <TextBlock Text="{Binding OverallSafetyDisplayText}" />
+          </Border>
+
+          <Button x:Name="EvaluateSafetyButton"
+                  Classes="pill cyan"
+                  Command="{Binding EvaluateSafetyCommand}"
+                  Content="Re-evaluate Safety" />
+        </WrapPanel>
+      </Grid>
+
+      <!-- Compact Active Regimen Snapshot -->
+      <Border Classes="regimen-strip">
+        <Grid ColumnDefinitions="0.75*,10,0.65*,10,1.15*,10,1.85*" MinWidth="0">
+          <StackPanel Grid.Column="0" Spacing="1" MinWidth="0">
+            <TextBlock Text="TARGET DRY WEIGHT" FontSize="9.5" FontWeight="Bold" Foreground="#64748B" />
+            <TextBlock Text="{Binding FormattedCurrentDryWeight}"
+                       FontSize="13"
+                       FontWeight="Bold"
+                       Foreground="#0F172A"
+                       TextWrapping="Wrap" />
+          </StackPanel>
+
+          <StackPanel Grid.Column="2" Spacing="1" MinWidth="0">
+            <TextBlock Text="WATSON TBW" FontSize="9.5" FontWeight="Bold" Foreground="#64748B" />
+            <TextBlock Text="{Binding FormattedTotalBodyWater}"
+                       FontSize="13"
+                       FontWeight="Bold"
+                       Foreground="#0E7490"
+                       TextWrapping="Wrap" />
+          </StackPanel>
+
+          <StackPanel Grid.Column="4" Spacing="1" MinWidth="0">
+            <TextBlock Text="ACTIVE ANTICOAGULANT" FontSize="9.5" FontWeight="Bold" Foreground="#64748B" />
+            <TextBlock Text="{Binding FormattedActiveHeparinSummary}"
+                       FontSize="11.5"
+                       FontWeight="SemiBold"
+                       Foreground="#0F172A"
+                       TextWrapping="Wrap" />
+          </StackPanel>
+
+          <StackPanel Grid.Column="6" Spacing="1" MinWidth="0">
+            <TextBlock Text="CURRENT DIALYSIS REGIMEN" FontSize="9.5" FontWeight="Bold" Foreground="#64748B" />
+            <TextBlock Text="{Binding FormattedActiveBathSummary}"
+                       FontSize="11.5"
+                       Foreground="#334155"
+                       TextWrapping="Wrap" />
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <!-- Primary 2-Card Layout (Above-the-Fold Rx Signing) -->
+      <Grid ColumnDefinitions="1.14*,12,0.86*" MinWidth="0">
+
+        <!-- LEFT CARD: Dialysis Order & Dry Weight -->
+        <Border Grid.Column="0" Classes="workspace-card" MinWidth="0">
+          <StackPanel Spacing="10">
+
+            <!-- Group 1: Compact Inline Target Dry Weight -->
+            <Border x:Name="DryWeightOrderCard" BorderThickness="0" Padding="0">
+              <StackPanel Spacing="6">
+                <TextBlock Text="Target Dry Weight" FontSize="14" FontWeight="Bold" Foreground="#0F172A" />
+
+                <Grid ColumnDefinitions="108,8,*,8,Auto" MinWidth="0">
+                  <StackPanel Grid.Column="0" MinWidth="0">
+                    <TextBlock Text="Dry Weight (kg)" Classes="field-label" />
+                    <TextBox x:Name="NewDryWeightTextBox"
+                             Classes="clinical compact-rx"
+                             Text="{Binding NewDryWeightKgText}"
+                             Watermark="e.g. 68.5"
+                             KeyDown="OnDryWeightKeyDown"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Column="2" MinWidth="0">
+                    <TextBlock Text="Clinical Rationale" Classes="field-label" />
+                    <TextBox x:Name="DryWeightRationaleTextBox"
+                             Classes="clinical compact-rx"
+                             Text="{Binding DryWeightRationaleText}"
+                             Watermark="Reason for adjustment..."
+                             KeyDown="OnDryWeightKeyDown"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <Button x:Name="SaveDryWeightButton"
+                          Grid.Column="4"
+                          Classes="pill primary"
+                          Command="{Binding SaveDryWeightCommand}"
+                          Content="Save Dry Weight"
+                          VerticalAlignment="Bottom"
+                          Padding="12,7" />
+                </Grid>
+
+                <TextBlock Text="{Binding DryWeightStatusMessage}"
+                           Classes="status-msg"
+                           Classes.error-msg="{Binding IsDryWeightError}"
+                           IsVisible="{Binding DryWeightStatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              </StackPanel>
+            </Border>
+
+            <Border Height="1" Background="#E2E8F0" />
+
+            <!-- Group 2: Compact 3-Column Dialysis Prescription -->
+            <Border x:Name="PrescriptionOrderCard" BorderThickness="0" Padding="0">
+              <StackPanel Spacing="8">
+                <Grid ColumnDefinitions="*,8,Auto" MinWidth="0">
+                  <StackPanel Grid.Column="0" Spacing="1" MinWidth="0">
+                    <TextBlock Text="Dialysis Prescription" FontSize="14" FontWeight="Bold" Foreground="#0F172A" />
+                    <TextBlock Text="Blank until entered or filled via Standard Defaults."
+                               FontSize="11.5"
+                               Foreground="#64748B"
+                               TextWrapping="Wrap" />
+                  </StackPanel>
+
+                  <Button x:Name="FillStandardDefaultsButton"
+                          Grid.Column="2"
+                          Classes="pill secondary"
+                          Command="{Binding FillStandardDefaultsCommand}"
+                          Content="Fill Standard Defaults"
+                          VerticalAlignment="Center"
+                          Padding="12,6" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,10,*,10,*"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                      MinWidth="0">
+                  <!-- Row 0 -->
+                  <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,7" MinWidth="0">
+                    <TextBlock Text="Dialyzer" Classes="field-label" />
+                    <TextBox x:Name="DialyzerModelTextBox"
+                             Classes="clinical compact-rx"
+                             Text="{Binding DialyzerModel}"
+                             Watermark="e.g. FX-80"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,7" MinWidth="0">
+                    <TextBlock Text="Area (m&#178;)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding SurfaceAreaM2Text}"
+                             Watermark="e.g. 1.8"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Row="0" Grid.Column="4" Margin="0,0,0,7" MinWidth="0">
+                    <TextBlock Text="Duration (min)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding DurationMinText}"
+                             Watermark="e.g. 240"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <!-- Row 1 -->
+                  <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,7" MinWidth="0">
+                    <TextBlock Text="Qb (mL/min)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding QbText}"
+                             Watermark="e.g. 350"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,7" MinWidth="0">
+                    <TextBlock Text="Qd (mL/min)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding QdText}"
+                             Watermark="e.g. 500"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Row="1" Grid.Column="4" Margin="0,0,0,7" MinWidth="0">
+                    <TextBlock Text="Anticoagulant" Classes="field-label" />
+                    <ComboBox Classes="clinical compact-rx"
+                              ItemsSource="{Binding RxNormCatalogItems}"
+                              SelectedItem="{Binding SelectedAnticoagulantCatalog}"
+                              PlaceholderText="Select anticoagulant..."
+                              HorizontalAlignment="Stretch"
+                              MinWidth="0">
+                      <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                          <TextBlock Text="{Binding GenericName}" TextTrimming="CharacterEllipsis" />
+                        </DataTemplate>
+                      </ComboBox.ItemTemplate>
+                    </ComboBox>
+                  </StackPanel>
+
+                  <!-- Row 2 -->
+                  <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,7" MinWidth="0">
+                    <TextBlock Text="Bath K+ (mEq/L)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding PotassiumMeqLText}"
+                             Watermark="e.g. 2"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,7" MinWidth="0">
+                    <TextBlock Text="Bath Ca2+ (mEq/L)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding CalciumMeqLText}"
+                             Watermark="e.g. 1.25"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Row="2" Grid.Column="4" Margin="0,0,0,7" MinWidth="0">
+                    <TextBlock Text="Bath Na+ (mEq/L)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding SodiumMeqLText}"
+                             Watermark="e.g. 138"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <!-- Row 3 -->
+                  <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,0,8" MinWidth="0">
+                    <TextBlock Text="HCO3- (mEq/L)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding BicarbonateMeqLText}"
+                             Watermark="e.g. 32"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Row="3" Grid.Column="2" Margin="0,0,0,8" MinWidth="0">
+                    <TextBlock Text="Bolus (units)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding HeparinBolusText}"
+                             Watermark="e.g. 2000"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Row="3" Grid.Column="4" Margin="0,0,0,8" MinWidth="0">
+                    <TextBlock Text="Rate (units/h)" Classes="field-label" />
+                    <TextBox Classes="clinical compact-rx"
+                             Text="{Binding HeparinHourlyText}"
+                             Watermark="e.g. 500"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <!-- Row 4: Clinical Note + Primary Sign CTA inline -->
+                  <Grid Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="5"
+                        ColumnDefinitions="*,10,Auto"
+                        MinWidth="0">
+                    <TextBox Grid.Column="0"
+                             Classes="clinical compact-rx"
+                             Text="{Binding PrescriptionRationaleText}"
+                             Watermark="Optional clinical note..."
+                             MinWidth="0" />
+
+                    <Button x:Name="SignPrescriptionButton"
+                            Grid.Column="2"
+                            Classes="pill primary"
+                            Command="{Binding SignPrescriptionCommand}"
+                            Content="Sign &amp; Send to Nurse"
+                            VerticalAlignment="Center" />
+                  </Grid>
+                </Grid>
+
+                <TextBlock Text="{Binding RxStatusMessage}"
+                           Classes="status-msg"
+                           Classes.error-msg="{Binding IsRxError}"
+                           IsVisible="{Binding RxStatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Border>
+
+        <!-- RIGHT CARD: Patient Safety Summary -->
+        <Border Grid.Column="2" Classes="workspace-card" MinWidth="0">
+          <StackPanel Spacing="10">
+            <Grid ColumnDefinitions="*,12,Auto" MinWidth="0">
+              <StackPanel Grid.Column="0" Spacing="1" MinWidth="0">
+                <TextBlock Text="Patient Safety Summary"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Foreground="#0F172A"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="Hemodynamic risk drivers &amp; drug check"
+                           FontSize="11.5"
+                           Foreground="#64748B"
+                           TextWrapping="Wrap" />
+              </StackPanel>
+
+              <Border x:Name="AdeSafetyResultPill"
+                      Grid.Column="2"
+                      VerticalAlignment="Top"
+                      Classes="safety-pill"
+                      Classes.approved="{Binding IsSafetyApproved}"
+                      Classes.advisory="{Binding IsSafetyAdvisory}"
+                      Classes.blocked="{Binding IsSafetyBlocked}"
+                      Classes.pending="{Binding IsSafetyPending}">
+                <TextBlock Text="{Binding AdeSafetySummaryPillText}" />
+              </Border>
+            </Grid>
+
+            <!-- Plain-English Risk Summary -->
+            <Border Background="#F8FAFC"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="10,8">
+              <StackPanel Spacing="4">
+                <TextBlock Text="{Binding RiskSummaryHeadline}"
+                           FontSize="13"
+                           FontWeight="Bold"
+                           Foreground="#0F172A"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="{Binding AlgorithmPlainSummary}"
+                           FontSize="12"
+                           Foreground="#475569"
+                           TextWrapping="Wrap"
+                           IsVisible="{Binding AlgorithmPlainSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              </StackPanel>
+            </Border>
+
+            <!-- Top 3 Drivers -->
+            <StackPanel Spacing="5">
+              <TextBlock Text="TOP CONTRIBUTING FACTORS"
+                         FontSize="10"
+                         FontWeight="Bold"
+                         Foreground="#64748B" />
+
+              <ItemsControl x:Name="Top3DriversItemsControl"
+                            ItemsSource="{Binding Top3Drivers}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border Background="#FFFFFF"
+                            BorderBrush="#E2E8F0"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="9,7"
+                            Margin="0,0,0,6">
+                      <StackPanel Spacing="3">
+                        <Grid ColumnDefinitions="*,8,Auto" MinWidth="0">
+                          <TextBlock Grid.Column="0"
+                                     Text="{Binding FeatureName, Converter={x:Static views:SafetyRxWorkbenchView.DriverNameConverter}}"
+                                     FontSize="12"
+                                     FontWeight="SemiBold"
+                                     Foreground="#0F172A"
+                                     TextWrapping="Wrap" />
+                          <Border Grid.Column="2"
+                                  Background="#ECFEFF"
+                                  BorderBrush="#BAE6FD"
+                                  BorderThickness="1"
+                                  CornerRadius="6"
+                                  Padding="6,2"
+                                  VerticalAlignment="Top">
+                            <TextBlock Text="{Binding RuleOrShapWeight, StringFormat='Weight {0:0.##}'}"
+                                       FontSize="10.5"
+                                       FontWeight="Bold"
+                                       Foreground="#0369A1" />
+                          </Border>
+                        </Grid>
+
+                        <TextBlock FontSize="11"
+                                   Foreground="#475569"
+                                   TextWrapping="Wrap">
+                          <Run Text="Observed: " FontWeight="SemiBold" />
+                          <Run Text="{Binding ObservedValueText, Converter={x:Static views:SafetyRxWorkbenchView.DriverValueConverter}}" />
+                          <Run Text="  ·  Target: " FontWeight="SemiBold" />
+                          <Run Text="{Binding ReferenceThresholdText, Converter={x:Static views:SafetyRxWorkbenchView.DriverValueConverter}}" />
+                        </TextBlock>
+                      </StackPanel>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+
+              <TextBlock Text="No elevated risk drivers flagged for the active patient."
+                         FontSize="12"
+                         Foreground="#64748B"
+                         TextWrapping="Wrap"
+                         IsVisible="{Binding !Top3Drivers.Count}" />
+            </StackPanel>
+
+            <!-- Active ADE Conflicts Alert (surfaced immediately if present) -->
+            <Border Background="#FFFBEB"
+                    BorderBrush="#F59E0B"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="10,8"
+                    IsVisible="{Binding HasAdeConflicts}">
+              <StackPanel Spacing="4">
+                <TextBlock Text="Medication Interaction Flagged"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           Foreground="#92400E" />
+                <ItemsControl ItemsSource="{Binding Conflicts}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock FontSize="11.5"
+                                 Foreground="#78350F"
+                                 TextWrapping="Wrap"
+                                 Margin="0,2,0,0">
+                        <Run Text="{Binding PrimaryRxCui, Converter={x:Static views:SafetyRxWorkbenchView.RxNormDisplayConverter}}" FontWeight="SemiBold" />
+                        <Run Text=" + " />
+                        <Run Text="{Binding InteractingEntity, Converter={x:Static views:SafetyRxWorkbenchView.InteractingEntityConverter}}" FontWeight="SemiBold" />
+                        <Run Text=" (" />
+                        <Run Text="{Binding Severity}" />
+                        <Run Text="): " />
+                        <Run Text="{Binding ClinicalGuidance, Converter={x:Static views:SafetyRxWorkbenchView.CleanMeasurementConverter}}" />
+                      </TextBlock>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+
+            <!-- Quick Links to Secondary Tools & Clinical Reasoning -->
+            <WrapPanel Orientation="Horizontal" Margin="0,2,0,0">
+              <Button Classes="pill secondary"
+                      Content="Drug &amp; Anemia Check ↓"
+                      Click="OnOpenMedicationCheckClick"
+                      Margin="0,0,8,6" />
+              <Button Classes="pill secondary"
+                      Content="Reasoning &amp; History ↓"
+                      Click="OnOpenClinicalReasoningClick"
+                      Margin="0,0,0,6" />
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+      </Grid>
+
+      <!-- Secondary Collapsible Card: Medication Check (ADE) & Anemia Dose Helper -->
+      <Expander x:Name="MedicationAnemiaExpander"
+                Classes="clean-expander"
+                Header="Medication Check (ADE) &amp; Anemia Dose Helper"
+                IsExpanded="False">
+        <Border x:Name="AdeMedicationCard" Padding="2,10,2,2" BorderThickness="0">
+          <Grid ColumnDefinitions="*,16,*" MinWidth="0">
+            <!-- Concomitant Drug Check -->
+            <StackPanel Grid.Column="0" Spacing="10" MinWidth="0">
+              <StackPanel Spacing="2">
+                <TextBlock Text="Concomitant Drug Check (ADE)" FontSize="13.5" FontWeight="Bold" Foreground="#0F172A" />
+                <TextBlock Text="Screen candidate RxNorm medications against the active dialysis regimen."
+                           Classes="section-subtitle" />
+              </StackPanel>
+
+              <Grid ColumnDefinitions="*,10,120" MinWidth="0">
+                <StackPanel Grid.Column="0" MinWidth="0">
+                  <TextBlock Text="Candidate Medication Code" Classes="field-label" />
+                  <TextBox x:Name="CandidateConcomitantRxTextBox"
+                           Classes="clinical"
+                           Text="{Binding CandidateConcomitantRxCui}"
+                           Watermark="e.g. 1191 or 7052"
+                           KeyDown="OnAdeInputKeyDown"
+                           MinWidth="0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" MinWidth="0">
+                  <TextBlock Text="CrCl (mL/min)" Classes="field-label" />
+                  <TextBox x:Name="EstimatedCrClTextBox"
+                           Classes="clinical"
+                           Text="{Binding EstimatedCrClText}"
+                           Watermark="e.g. 12"
+                           KeyDown="OnAdeInputKeyDown"
+                           MinWidth="0" />
+                </StackPanel>
+              </Grid>
+
+              <Button x:Name="RunAdeCheckButton"
+                      Classes="pill cyan"
+                      Command="{Binding EvaluateSafetyCommand}"
+                      Content="Run Medication Safety Check"
+                      HorizontalAlignment="Left" />
+
+              <ItemsControl ItemsSource="{Binding Conflicts}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border Background="#FFFBEB"
+                            BorderBrush="#F59E0B"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="10,8"
+                            Margin="0,0,0,6">
+                      <StackPanel Spacing="3">
+                        <TextBlock FontSize="12" FontWeight="Bold" Foreground="#92400E" TextWrapping="Wrap">
+                          <Run Text="{Binding PrimaryRxCui, Converter={x:Static views:SafetyRxWorkbenchView.RxNormDisplayConverter}}" />
+                          <Run Text=" vs " />
+                          <Run Text="{Binding InteractingEntity, Converter={x:Static views:SafetyRxWorkbenchView.InteractingEntityConverter}}" />
+                          <Run Text=" [" />
+                          <Run Text="{Binding Severity}" />
+                          <Run Text="]" />
+                        </TextBlock>
+                        <TextBlock Text="{Binding MechanismSummary, Converter={x:Static views:SafetyRxWorkbenchView.ConflictSummaryConverter}}"
+                                   FontSize="11.5"
+                                   Foreground="#78350F"
+                                   TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding ClinicalGuidance, Converter={x:Static views:SafetyRxWorkbenchView.CleanMeasurementConverter}}"
+                                   FontSize="11.5"
+                                   FontWeight="SemiBold"
+                                   Foreground="#92400E"
+                                   TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+
+              <TextBlock Text="No drug-drug or renal dosing conflicts detected for current inputs."
+                         FontSize="12"
+                         Foreground="#0F766E"
+                         FontWeight="SemiBold"
+                         TextWrapping="Wrap"
+                         IsVisible="{Binding !HasAdeConflicts}" />
+            </StackPanel>
+
+            <!-- AnemiaCare HD Dose Helper & ISMP Reference -->
+            <StackPanel Grid.Column="2" Spacing="10" MinWidth="0">
+              <StackPanel Spacing="2">
+                <TextBlock Text="Anemia Dose Helper" FontSize="13.5" FontWeight="Bold" Foreground="#0F172A" />
+                <TextBlock Text="KDIGO ESA &amp; iron guidance derived from verified hemoglobin labs."
+                           Classes="section-subtitle" />
+              </StackPanel>
+
+              <Border Background="#F8FAFC"
+                      BorderBrush="#E2E8F0"
+                      BorderThickness="1"
+                      CornerRadius="8"
+                      Padding="12,10">
+                <TextBlock Text="{Binding FormattedTitrationSummary}"
+                           FontSize="12.5"
+                           FontWeight="SemiBold"
+                           Foreground="#0F172A"
+                           TextWrapping="Wrap" />
+              </Border>
+
+              <Border Background="#F8FAFC"
+                      BorderBrush="#E2E8F0"
+                      BorderThickness="1"
+                      CornerRadius="8"
+                      Padding="12,10">
+                <StackPanel Spacing="3">
+                  <TextBlock Text="HIGH-ALERT MEDICATION SAFETY REFERENCE"
+                             FontSize="10"
+                             FontWeight="Bold"
+                             Foreground="#64748B" />
+                  <TextBlock Text="{Binding FormattedSampleTallManAlert}"
+                             FontSize="11.5"
+                             FontFamily="{StaticResource ClinicalMonoFont}"
+                             Foreground="#334155"
+                             TextWrapping="Wrap" />
+                </StackPanel>
+              </Border>
+            </StackPanel>
+          </Grid>
+        </Border>
+      </Expander>
+
+      <!-- Collapsible Regulatory, Guidelines & Order History Drawer -->
+      <Expander x:Name="ClinicalReasoningExpander"
+                Classes="clean-expander"
+                Header="Clinical Reasoning, Guidelines &amp; Order History"
+                IsExpanded="False">
+        <StackPanel Spacing="14" Margin="0,10,0,2">
+
+          <Border x:Name="Criterion4Card"
+                  Background="#F8FAFC"
+                  BorderBrush="#E2E8F0"
+                  BorderThickness="1"
+                  CornerRadius="10"
+                  Padding="14">
+            <StackPanel Spacing="12">
+              <Grid ColumnDefinitions="*,12,Auto" MinWidth="0">
+                <StackPanel Grid.Column="0" Spacing="2" MinWidth="0">
+                  <TextBlock Text="Clinical Decision Support Transparency"
+                             FontSize="14"
+                             FontWeight="Bold"
+                             Foreground="#0F172A" />
+                  <TextBlock Text="{Binding TelemetryVectorSummary}"
+                             FontSize="12"
+                             Foreground="#475569"
+                             TextWrapping="Wrap"
+                             IsVisible="{Binding TelemetryVectorSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                </StackPanel>
+
+                <Border Grid.Column="2"
+                        Background="#FFFFFF"
+                        BorderBrush="#CBD5E1"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="10,6"
+                        VerticalAlignment="Center">
+                  <TextBlock Text="{Binding DataCompletenessText, StringFormat='Data Completeness: {0}'}"
+                             FontSize="12"
+                             FontWeight="SemiBold"
+                             Foreground="#0F172A" />
+                </Border>
+              </Grid>
+
+              <Grid ColumnDefinitions="*,12,*" MinWidth="0">
+                <!-- Deterministic Citations -->
+                <Border x:Name="DeterministicBasisPane"
+                        Grid.Column="0"
+                        Background="#FFFFFF"
+                        BorderBrush="#E2E8F0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="12"
+                        MinWidth="0">
+                  <StackPanel Spacing="8">
+                    <TextBlock Text="Verified Rules &amp; Guideline Citations"
+                               FontSize="12.5"
+                               FontWeight="Bold"
+                               Foreground="#0F172A" />
+                    <TextBlock Text="{Binding RequiredInputsSummary}"
+                               FontSize="11.5"
+                               Foreground="#64748B"
+                               TextWrapping="Wrap"
+                               IsVisible="{Binding RequiredInputsSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+
+                    <ItemsControl ItemsSource="{Binding VerifiedDeterministicCitations}">
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                          <Border Background="#F8FAFC"
+                                  BorderBrush="#E2E8F0"
+                                  BorderThickness="1"
+                                  CornerRadius="6"
+                                  Padding="8,6"
+                                  Margin="0,0,0,6">
+                            <TextBlock Text="{Binding}"
+                                       FontSize="11.5"
+                                       Foreground="#334155"
+                                       TextWrapping="Wrap" />
+                          </Border>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </StackPanel>
+                </Border>
+
+                <!-- Qualitative Clinical Advisories -->
+                <Border x:Name="QualitativeGuidancePane"
+                        Grid.Column="2"
+                        Background="#FFFFFF"
+                        BorderBrush="#E2E8F0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="12"
+                        MinWidth="0">
+                  <StackPanel Spacing="8">
+                    <TextBlock Text="Clinical Context &amp; Verification Guidance"
+                               FontSize="12.5"
+                               FontWeight="Bold"
+                               Foreground="#0F172A" />
+                    <TextBlock Text="{Binding IntendedUseSummary}"
+                               FontSize="11.5"
+                               Foreground="#64748B"
+                               TextWrapping="Wrap"
+                               IsVisible="{Binding IntendedUseSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+
+                    <ItemsControl ItemsSource="{Binding QualitativeClinicalAdvisories}">
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                          <Border Background="#FFFBEB"
+                                  BorderBrush="#FDE68A"
+                                  BorderThickness="1"
+                                  CornerRadius="6"
+                                  Padding="8,6"
+                                  Margin="0,0,0,6">
+                            <TextBlock Text="{Binding}"
+                                       FontSize="11.5"
+                                       Foreground="#78350F"
+                                       TextWrapping="Wrap" />
+                          </Border>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </StackPanel>
+                </Border>
+              </Grid>
+
+              <!-- HL7 FHIR R4 Export Bar -->
+              <StackPanel Spacing="8">
+                <WrapPanel Orientation="Horizontal">
+                  <Button x:Name="ExportFhirBundleButton"
+                          Classes="pill cyan"
+                          Command="{Binding ExportFhirBundleCommand}"
+                          Content="Export HL7 FHIR R4 Bundle"
+                          Margin="0,0,8,0" />
+                  <Button x:Name="ToggleFhirDrawerButton"
+                          Classes="pill secondary"
+                          Command="{Binding ToggleFhirDrawerCommand}"
+                          Content="{Binding FhirToggleButtonText}" />
+                </WrapPanel>
+
+                <TextBox x:Name="FhirJsonViewerBox"
+                         Classes="clinical"
+                         Text="{Binding FhirBundleJsonText, Mode=OneWay}"
+                         IsReadOnly="True"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         MaxHeight="220"
+                         FontFamily="{StaticResource ClinicalMonoFont}"
+                         FontSize="11.5"
+                         IsVisible="{Binding IsFhirDrawerExpanded}" />
+              </StackPanel>
+            </StackPanel>
+          </Border>
+
+          <!-- Order Handshake History -->
+          <Border Background="#FFFFFF"
+                  BorderBrush="#E2E8F0"
+                  BorderThickness="1"
+                  CornerRadius="10"
+                  Padding="14">
+            <StackPanel Spacing="8">
+              <TextBlock Text="Bedside Order Handshake History"
+                         FontSize="13.5"
+                         FontWeight="Bold"
+                         Foreground="#0F172A" />
+
+              <ItemsControl x:Name="OrderHandshakesItemsControl"
+                            ItemsSource="{Binding OrderHandshakes}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border Background="#F8FAFC"
+                            BorderBrush="#E2E8F0"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="10,8"
+                            Margin="0,0,0,6">
+                      <Grid ColumnDefinitions="*,10,Auto" MinWidth="0">
+                        <StackPanel Grid.Column="0" Spacing="2" MinWidth="0">
+                          <TextBlock FontSize="12.5" FontWeight="SemiBold" Foreground="#0F172A" TextWrapping="Wrap">
+                            <Run Text="{Binding DirectiveType, Converter={x:Static views:SafetyRxWorkbenchView.DirectiveTypeConverter}}" />
+                            <Run Text=" — " />
+                            <Run Text="{Binding IsmpFormattedDoseText, Converter={x:Static views:SafetyRxWorkbenchView.CleanRouteDoseConverter}}" />
+                          </TextBlock>
+                          <TextBlock Text="{Binding DirectiveSummary}"
+                                     FontSize="11.5"
+                                     Foreground="#475569"
+                                     TextWrapping="Wrap" />
+                          <TextBlock FontSize="11" Foreground="#64748B" TextWrapping="Wrap">
+                            <Run Text="{Binding CreatedAtUtc, Converter={x:Static views:SafetyRxWorkbenchView.HumanTimestampConverter}}" />
+                            <Run Text="  ·  Rev " />
+                            <Run Text="{Binding ExpectedSyncVersion}" />
+                          </TextBlock>
+                        </StackPanel>
+
+                        <Border Grid.Column="2"
+                                Background="{Binding Status, Converter={x:Static views:SafetyRxWorkbenchView.HandshakeBadgeBgConverter}}"
+                                BorderBrush="{Binding Status, Converter={x:Static views:SafetyRxWorkbenchView.HandshakeBadgeBorderConverter}}"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="10,4"
+                                VerticalAlignment="Center">
+                          <TextBlock Text="{Binding Status, Converter={x:Static views:SafetyRxWorkbenchView.HandshakeStatusConverter}}"
+                                     FontSize="11"
+                                     FontWeight="Bold"
+                                     Foreground="{Binding Status, Converter={x:Static views:SafetyRxWorkbenchView.HandshakeBadgeFgConverter}}" />
+                        </Border>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+
+              <TextBlock Text="No bedside order handshakes recorded for this patient yet."
+                         FontSize="12"
+                         Foreground="#64748B"
+                         TextWrapping="Wrap"
+                         IsVisible="{Binding !OrderHandshakes.Count}" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Expander>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

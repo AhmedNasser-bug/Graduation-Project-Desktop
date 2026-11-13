@@ -1,0 +1,204 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:NephroEdge.Desktop.ViewModels"
+             x:Class="NephroEdge.Desktop.Controls.StickyPatientBanner"
+             x:DataType="vm:StickyPatientBannerViewModel">
+  <Border Classes="banner-card"
+          Background="{StaticResource SurfaceBrush}"
+          BorderBrush="{StaticResource BorderBrush}"
+          BorderThickness="0,0,0,1"
+          Padding="20,10">
+    <Grid ColumnDefinitions="1.18*,Auto,1.0*,Auto" VerticalAlignment="Center">
+      <!-- Left: Circle Avatar + Patient Name + Inline Quiet Identifiers + Mutual-Exclusion Isolation -->
+      <Grid Grid.Column="0" ColumnDefinitions="Auto,*" VerticalAlignment="Center">
+        <Border Grid.Column="0"
+                Width="36"
+                Height="36"
+                CornerRadius="18"
+                Background="{StaticResource SafeTealSoftBrush}"
+                BorderBrush="#99F6E4"
+                BorderThickness="1"
+                VerticalAlignment="Center">
+          <TextBlock x:Name="BannerAvatarInitialsText"
+                     Text="{Binding InitialsText}"
+                     FontSize="13"
+                     FontWeight="Bold"
+                     Foreground="{StaticResource SafeTealInkBrush}"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center" />
+        </Border>
+
+        <StackPanel Grid.Column="1"
+                    Margin="10,0,0,0"
+                    Spacing="2"
+                    VerticalAlignment="Center">
+          <Grid ColumnDefinitions="*,Auto" HorizontalAlignment="Left">
+            <TextBlock x:Name="BannerPatientNameText"
+                       Grid.Column="0"
+                       Text="{Binding FullNameText}"
+                       FontSize="17"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource InkBrush}"
+                       TextTrimming="CharacterEllipsis"
+                       VerticalAlignment="Center" />
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center">
+              <Border x:Name="BannerIsolationHighBorder"
+                      Background="#B45309"
+                      CornerRadius="10"
+                      Padding="8,2"
+                      IsVisible="{Binding IsIsolationRequired}"
+                      VerticalAlignment="Center">
+                <TextBlock x:Name="BannerIsolationHighText"
+                           Text="{Binding CompactIsolationText}"
+                           FontSize="10.5"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Foreground="#FFFFFF" />
+              </Border>
+
+              <Border x:Name="BannerIsolationStandardBorder"
+                      Background="{StaticResource SurfaceSubtleBrush}"
+                      CornerRadius="10"
+                      Padding="8,2"
+                      IsVisible="{Binding IsStandardPrecautions}"
+                      VerticalAlignment="Center">
+                <TextBlock x:Name="BannerIsolationStandardText"
+                           Text="{Binding CompactIsolationText}"
+                           FontSize="10.5"
+                           FontWeight="Medium"
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource MutedInkBrush}" />
+              </Border>
+            </StackPanel>
+          </Grid>
+
+          <StackPanel Orientation="Horizontal" Spacing="5">
+            <TextBlock x:Name="BannerMrnText"
+                       FontSize="11.5"
+                       Foreground="{StaticResource MutedInkBrush}"
+                       Text="{Binding MrnPlainText}" />
+            <TextBlock FontSize="11.5"
+                       Foreground="{StaticResource MutedInkBrush}"
+                       Text="·" />
+            <TextBlock x:Name="BannerPatientIdText"
+                       FontSize="11.5"
+                       Foreground="{StaticResource MutedInkBrush}"
+                       Text="{Binding PatientIdPlainText}" />
+            <TextBlock FontSize="11.5"
+                       Foreground="{StaticResource MutedInkBrush}"
+                       Text="·" />
+            <TextBlock x:Name="BannerDemographicsText"
+                       FontSize="11.5"
+                       Foreground="{StaticResource MutedInkBrush}"
+                       Text="{Binding CompactDemographicsText}"
+                       TextTrimming="CharacterEllipsis" />
+          </StackPanel>
+        </StackPanel>
+      </Grid>
+
+      <!-- Divider -->
+      <Border Grid.Column="1"
+              Width="1"
+              Height="32"
+              Background="{StaticResource BorderBrush}"
+              Margin="12,0"
+              VerticalAlignment="Center" />
+
+      <!-- Middle: 3 Borderless Label/Value Clinical Metrics -->
+      <Grid Grid.Column="2"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="14"
+            VerticalAlignment="Center">
+        <StackPanel Grid.Column="0" Spacing="1">
+          <TextBlock FontSize="11"
+                     Foreground="{StaticResource MutedInkBrush}"
+                     Text="Dry Weight" />
+          <TextBlock x:Name="BannerDryWeightText"
+                     Classes="telemetry-num"
+                     FontSize="13"
+                     Foreground="{StaticResource InkBrush}"
+                     Text="{Binding DryWeightText}" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Spacing="1">
+          <TextBlock FontSize="11"
+                     Foreground="{StaticResource MutedInkBrush}"
+                     Text="Access" />
+          <TextBlock x:Name="BannerAccessText"
+                     FontSize="13"
+                     FontWeight="SemiBold"
+                     Foreground="{StaticResource InkBrush}"
+                     Text="{Binding VascularAccessText}"
+                     TextTrimming="CharacterEllipsis" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Spacing="1">
+          <TextBlock FontSize="11"
+                     Foreground="{StaticResource MutedInkBrush}"
+                     Text="Bed" />
+          <TextBlock x:Name="BannerBedText"
+                     Classes="telemetry-num"
+                     FontSize="13"
+                     Foreground="{StaticResource InkBrush}"
+                     Text="{Binding CurrentBedText}" />
+        </StackPanel>
+      </Grid>
+
+      <!-- Right: Sleek Patient Switcher -->
+      <ComboBox x:Name="PatientSwitcherComboBox"
+                Grid.Column="3"
+                Classes="clinical"
+                Width="195"
+                Margin="14,0,0,0"
+                Padding="10,5"
+                MaxDropDownHeight="360"
+                VerticalAlignment="Center"
+                ToolTip.Tip="Switch active patient"
+                ItemsSource="{Binding SwitcherItems}"
+                SelectedItem="{Binding SelectedSwitcherItem, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate x:DataType="vm:PatientSwitcherOption">
+            <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto">
+              <TextBlock Grid.Row="0"
+                         Grid.Column="0"
+                         Text="{Binding AlarmGlyph}"
+                         Foreground="{Binding AlarmGlyphBrush}"
+                         FontSize="11"
+                         VerticalAlignment="Center"
+                         Margin="0,0,6,0" />
+              <TextBlock Grid.Row="0"
+                         Grid.Column="1"
+                         Text="{Binding FullName}"
+                         FontSize="12.5"
+                         FontWeight="SemiBold"
+                         Foreground="#0F172A"
+                         TextTrimming="CharacterEllipsis"
+                         VerticalAlignment="Center" />
+              <Border Grid.Row="0"
+                      Grid.Column="2"
+                      IsVisible="{Binding IsIsolationRequired}"
+                      Background="#B45309"
+                      CornerRadius="8"
+                      Padding="5,1"
+                      Margin="6,0,0,0"
+                      VerticalAlignment="Center">
+                <TextBlock Text="HBV+"
+                           FontSize="9.5"
+                           FontWeight="Bold"
+                           Foreground="#FFFFFF" />
+              </Border>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="1"
+                         Grid.ColumnSpan="2"
+                         Text="{Binding SecondaryLineText}"
+                         FontSize="10.5"
+                         Foreground="#475569"
+                         TextTrimming="CharacterEllipsis" />
+            </Grid>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </Grid>
+  </Border>
+</UserControl>

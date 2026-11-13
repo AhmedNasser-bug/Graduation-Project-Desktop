@@ -1,0 +1,640 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:NephroEdge.Desktop.Controls"
+             xmlns:views="clr-namespace:NephroEdge.Desktop.Views"
+             x:Class="NephroEdge.Desktop.Views.AnalyticsView">
+  <UserControl.Styles>
+    <Style Selector="Border.workspace-card">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="18" />
+    </Style>
+
+    <Style Selector="Border.seg-track">
+      <Setter Property="Background" Value="#F1F5F9" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="3" />
+    </Style>
+
+    <Style Selector="Button.seg-tab">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#475569" />
+      <Setter Property="FontSize" Value="12.5" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="14,6" />
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="Button.seg-tab:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#E2E8F0" />
+      <Setter Property="Foreground" Value="#0F172A" />
+    </Style>
+    <Style Selector="Button.seg-tab.active">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#CBD5E1" />
+      <Setter Property="Foreground" Value="#0F172A" />
+      <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="Button.seg-tab.active:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="Foreground" Value="#0F172A" />
+    </Style>
+
+    <Style Selector="Button.bio-pill">
+      <Setter Property="Background" Value="#F8FAFC" />
+      <Setter Property="BorderBrush" Value="#CBD5E1" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#334155" />
+      <Setter Property="CornerRadius" Value="16" />
+      <Setter Property="Padding" Value="12,5" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="Button.bio-pill:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#E2E8F0" />
+      <Setter Property="Foreground" Value="#0F172A" />
+    </Style>
+    <Style Selector="Button.bio-pill.active">
+      <Setter Property="Background" Value="#E0F2FE" />
+      <Setter Property="BorderBrush" Value="#0284C7" />
+      <Setter Property="Foreground" Value="#0369A1" />
+      <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="Button.bio-pill.active:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#BAE6FD" />
+      <Setter Property="Foreground" Value="#0369A1" />
+    </Style>
+
+    <Style Selector="Button.window-pill">
+      <Setter Property="Background" Value="#F1F5F9" />
+      <Setter Property="BorderBrush" Value="#CBD5E1" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#0F172A" />
+      <Setter Property="Padding" Value="11,4" />
+      <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="FontWeight" Value="Normal" />
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="Button.window-pill:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#E2E8F0" />
+      <Setter Property="Foreground" Value="#0F172A" />
+    </Style>
+    <Style Selector="Button.window-pill.active">
+      <Setter Property="Background" Value="#E0F2FE" />
+      <Setter Property="BorderBrush" Value="#0284C7" />
+      <Setter Property="Foreground" Value="#0369A1" />
+      <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="Button.window-pill.active:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#BAE6FD" />
+      <Setter Property="Foreground" Value="#0369A1" />
+    </Style>
+
+    <Style Selector="Button.pill.secondary.drawer-open">
+      <Setter Property="Background" Value="#F0FDFA" />
+      <Setter Property="BorderBrush" Value="#0F766E" />
+      <Setter Property="Foreground" Value="#0F766E" />
+    </Style>
+
+    <Style Selector="Border.kpi-chip">
+      <Setter Property="Background" Value="#F8FAFC" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="12,9" />
+    </Style>
+
+    <Style Selector="Expander.clean-expander">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="14,10" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Foreground" Value="#0F172A" />
+      <Setter Property="FontSize" Value="13.5" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="ListBox#RecordedAnalytesListBox ListBoxItem">
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Margin" Value="0,0,6,6" />
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="ListBox#RecordedAnalytesListBox ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="ListBox#RecordedAnalytesListBox ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="ListBox#RecordedAnalytesListBox ListBoxItem Border.analyte-card">
+      <Setter Property="Background" Value="#F8FAFC" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="Padding" Value="10,5" />
+    </Style>
+    <Style Selector="ListBox#RecordedAnalytesListBox ListBoxItem:pointerover Border.analyte-card">
+      <Setter Property="Background" Value="#F0F9FF" />
+      <Setter Property="BorderBrush" Value="#7DD3FC" />
+    </Style>
+    <Style Selector="ListBox#RecordedAnalytesListBox ListBoxItem:selected Border.analyte-card">
+      <Setter Property="Background" Value="#E0F2FE" />
+      <Setter Property="BorderBrush" Value="#0284C7" />
+      <Setter Property="BorderThickness" Value="1.5" />
+    </Style>
+  </UserControl.Styles>
+
+  <ScrollViewer x:Name="AnalyticsScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="16,12,16,20" Spacing="14">
+
+      <!-- Calm Header + 2-Tab Segmented Switcher -->
+      <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
+        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+          <TextBlock Text="Patient Trends" FontSize="20" FontWeight="Bold" Foreground="#0F172A" />
+          <TextBlock Text="{Binding PatientHeaderLabel}"
+                     FontSize="12" Foreground="#475569" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+          <Border Classes="seg-track">
+            <StackPanel Orientation="Horizontal" Spacing="2">
+              <Button x:Name="LabsTabButton"
+                      Classes="seg-tab"
+                      Classes.active="{Binding IsLabsTabActive}"
+                      Content="Blood Labs"
+                      Command="{Binding SelectLabsTabCommand}" />
+              <Button x:Name="SessionsTabButton"
+                      Classes="seg-tab"
+                      Classes.active="{Binding IsSessionsTabActive}"
+                      Content="Sessions &amp; Kt/V"
+                      Command="{Binding SelectSessionsTabCommand}" />
+            </StackPanel>
+          </Border>
+          <Button x:Name="RefreshAnalyticsButton" Classes="pill secondary"
+                  Content="Refresh" Command="{Binding RefreshAnalyticsCommand}"
+                  Padding="14,6" VerticalAlignment="Center" />
+        </StackPanel>
+      </Grid>
+
+      <!-- TAB 1: BLOOD LABS -->
+      <StackPanel x:Name="BloodLabsTabPanel"
+                  IsVisible="{Binding IsLabsTabActive}"
+                  Spacing="12">
+        <Border Classes="workspace-card">
+          <StackPanel Spacing="14">
+
+            <!-- Biomarker Selector Pills + Add Lab Toggle -->
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+              <WrapPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button x:Name="AllLabsPillButton" Classes="bio-pill" Classes.active="{Binding IsAllLabsPillActive}"
+                        Content="All" Command="{Binding SelectBiomarkerCommand}" CommandParameter="ALL"
+                        Margin="0,0,6,4" />
+                <Button x:Name="PotassiumPillButton" Classes="bio-pill" Classes.active="{Binding IsPotassiumPillActive}"
+                        Content="K+" Command="{Binding SelectBiomarkerCommand}" CommandParameter="2823-3"
+                        Margin="0,0,6,4" />
+                <Button x:Name="HemoglobinPillButton" Classes="bio-pill" Classes.active="{Binding IsHemoglobinPillActive}"
+                        Content="Hb" Command="{Binding SelectBiomarkerCommand}" CommandParameter="718-7"
+                        Margin="0,0,6,4" />
+                <Button x:Name="PhosphorusPillButton" Classes="bio-pill" Classes.active="{Binding IsPhosphorusPillActive}"
+                        Content="Phosphorus" Command="{Binding SelectBiomarkerCommand}" CommandParameter="2777-1"
+                        Margin="0,0,6,4" />
+                <Button x:Name="PthPillButton" Classes="bio-pill" Classes.active="{Binding IsPthPillActive}"
+                        Content="PTH" Command="{Binding SelectBiomarkerCommand}" CommandParameter="2731-8"
+                        Margin="0,0,8,4" />
+                <ComboBox x:Name="LabLoincFilterComboBox"
+                          Classes="clinical"
+                          ItemsSource="{Binding AvailableLoincFilters}"
+                          SelectedItem="{Binding SelectedLoincFilter}"
+                          MinWidth="135"
+                          MaxWidth="185"
+                          Margin="0,0,0,4">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Converter={x:Static views:AnalyticsView.LoincFilterLabelConverter}}"
+                                 FontSize="12" />
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+              </WrapPanel>
+
+              <Button x:Name="ToggleAddLabDrawerButton"
+                      Grid.Column="1"
+                      Classes="pill secondary"
+                      Classes.drawer-open="{Binding IsAddLabDrawerOpen}"
+                      Content="{Binding AddLabDrawerButtonText}"
+                      Command="{Binding ToggleAddLabDrawerCommand}"
+                      Padding="14,7"
+                      VerticalAlignment="Top" />
+            </Grid>
+
+            <!-- Collapsible Inline Add Lab Drawer (Collapsed by Default) -->
+            <Border x:Name="AddLabDrawerBorder"
+                    IsVisible="{Binding IsAddLabDrawerOpen}"
+                    Background="#F8FAFC"
+                    BorderBrush="#CBD5E1"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="14,12">
+              <StackPanel Spacing="10">
+                <TextBlock Text="Record Verified Lab Result" FontSize="13.5" FontWeight="SemiBold" Foreground="#0F172A" />
+                <Grid ColumnDefinitions="1.3*,0.85*,1*,Auto" ColumnSpacing="10">
+                  <StackPanel Grid.Column="0" Spacing="3">
+                    <TextBlock Text="Analyte" FontSize="11.5" Foreground="#475569" />
+                    <ComboBox x:Name="AddLabCatalogComboBox"
+                              Classes="clinical"
+                              ItemsSource="{Binding CatalogLoincItems}"
+                              SelectedItem="{Binding SelectedAddLabCatalog}"
+                              MinWidth="0"
+                              HorizontalAlignment="Stretch">
+                      <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                          <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Text="{Binding AnalyteName}" FontSize="12" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding CanonicalUnit, StringFormat='({0})'}" FontSize="11" Foreground="#64748B" />
+                          </StackPanel>
+                        </DataTemplate>
+                      </ComboBox.ItemTemplate>
+                    </ComboBox>
+                  </StackPanel>
+
+                  <StackPanel Grid.Column="1" Spacing="3">
+                    <TextBlock Text="Numeric Value" FontSize="11.5" Foreground="#475569" />
+                    <TextBox x:Name="AddLabValueTextBox" Classes="clinical" MinWidth="0"
+                             Text="{Binding AddLabValue}" Watermark="Numeric Value"
+                             KeyDown="OnAddLabValueKeyDown" />
+                  </StackPanel>
+
+                  <StackPanel Grid.Column="2" Spacing="3">
+                    <TextBlock Text="Sampling Phase" FontSize="11.5" Foreground="#475569" />
+                    <ComboBox x:Name="AddLabPhaseComboBox" Classes="clinical" MinWidth="0"
+                              ItemsSource="{Binding SamplingPhases}" SelectedItem="{Binding AddLabPhase}"
+                              HorizontalAlignment="Stretch" />
+                  </StackPanel>
+
+                  <Button x:Name="SaveLabResultButton"
+                          Grid.Column="3"
+                          Classes="pill primary"
+                          Content="Save Lab Result"
+                          Command="{Binding SaveLabResultCommand}"
+                          VerticalAlignment="Bottom"
+                          Padding="16,8" />
+                </Grid>
+              </StackPanel>
+            </Border>
+
+            <!-- Save Status Toast (Visible When Present) -->
+            <Border IsVisible="{Binding LabSaveStatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8" Padding="12,8">
+              <StackPanel>
+                <TextBlock Text="{Binding LabSaveStatusMessage}"
+                           FontSize="12" FontWeight="SemiBold" Foreground="#0F766E" TextWrapping="Wrap">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Path="LabSaveStatusMessage" Converter="{x:Static StringConverters.IsNotNullOrEmpty}" />
+                      <Binding Path="!IsLabSaveError" />
+                      <Binding Path="!IsLabSaveCritical" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
+                <TextBlock Text="{Binding LabSaveStatusMessage}"
+                           FontSize="12" FontWeight="SemiBold" Foreground="#B91C1C" TextWrapping="Wrap">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Path="LabSaveStatusMessage" Converter="{x:Static StringConverters.IsNotNullOrEmpty}" />
+                      <Binding Path="!IsLabSaveError" />
+                      <Binding Path="IsLabSaveCritical" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
+                <TextBlock Text="{Binding LabSaveStatusMessage}"
+                           FontSize="12" FontWeight="SemiBold" Foreground="#B45309" TextWrapping="Wrap">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Path="LabSaveStatusMessage" Converter="{x:Static StringConverters.IsNotNullOrEmpty}" />
+                      <Binding Path="IsLabSaveError" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
+              </StackPanel>
+            </Border>
+
+            <!-- Crisp Summary Metric Header -->
+            <StackPanel Spacing="3">
+              <TextBlock Text="{Binding LabChartTitle}" FontSize="15" FontWeight="SemiBold" Foreground="#0F172A" />
+              <TextBlock Text="{Binding SelectedLabSummaryText}"
+                         IsVisible="{Binding !SelectedLabHasPanic}"
+                         FontSize="12.5" Foreground="#475569" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding SelectedLabSummaryText}"
+                         IsVisible="{Binding SelectedLabHasPanic}"
+                         FontSize="12.5" FontWeight="SemiBold" Foreground="#B91C1C" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <!-- Front-and-Center Interactive Skia Trend Chart -->
+            <controls:ClinicalTrendChartControl x:Name="LabTrendChart"
+                                                Title="{Binding LabChartTitle}"
+                                                UnitLabel="{Binding LabChartUnit}"
+                                                SeriesPoints="{Binding LabChartPoints}"
+                                                PrimarySeriesName="Observed Value"
+                                                NormalLow="{Binding LabNormalLow}"
+                                                NormalHigh="{Binding LabNormalHigh}"
+                                                PanicLow="{Binding LabPanicLow}"
+                                                PanicHigh="{Binding LabPanicHigh}"
+                                                EmptyStateMessage="{Binding LabEmptyStateMessage}"
+                                                MinHeight="240"
+                                                MaxHeight="285"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch" />
+
+            <!-- Horizontal Quick-Switch Strip When Multiple Analytes Exist -->
+            <ListBox x:Name="RecordedAnalytesListBox"
+                     IsVisible="{Binding HasMultipleLabTrends}"
+                     ItemsSource="{Binding LabTrends}"
+                     SelectedItem="{Binding SelectedLabTrend}"
+                     Background="Transparent"
+                     BorderThickness="0">
+              <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+              </ListBox.ItemsPanel>
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <Border Classes="analyte-card">
+                    <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
+                      <Ellipse Width="7" Height="7" VerticalAlignment="Center"
+                               Fill="{Binding Converter={x:Static views:AnalyticsView.AnalyteDotBrushConverter}}" />
+                      <TextBlock Text="{Binding AnalyteName}" FontSize="12" FontWeight="SemiBold" Foreground="#0F172A" VerticalAlignment="Center" />
+                      <TextBlock Text="{Binding LatestValue, StringFormat='{}{0:0.##}'}"
+                                 FontFamily="{StaticResource ClinicalMonoFont}" FontSize="12" FontWeight="Bold"
+                                 Foreground="{Binding Converter={x:Static views:AnalyticsView.AnalyteValueBrushConverter}}"
+                                 VerticalAlignment="Center" />
+                      <Border Background="{Binding Converter={x:Static views:AnalyticsView.AnalytePillBgConverter}}"
+                              CornerRadius="8" Padding="6,1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Converter={x:Static views:AnalyticsView.AnalyteStatusLabelConverter}}"
+                                   FontSize="10" FontWeight="SemiBold"
+                                   Foreground="{Binding Converter={x:Static views:AnalyticsView.AnalytePillFgConverter}}" />
+                      </Border>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <!-- TAB 2: SESSIONS & KT/V -->
+      <StackPanel x:Name="SessionsKtvTabPanel"
+                  IsVisible="{Binding IsSessionsTabActive}"
+                  Spacing="12">
+
+        <!-- Primary Sessions Card -->
+        <Border Classes="workspace-card">
+          <StackPanel Spacing="14">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+              <StackPanel Grid.Column="0" Spacing="2">
+                <TextBlock Text="Dialysis Sessions &amp; Adequacy" FontSize="15" FontWeight="SemiBold" Foreground="#0F172A" />
+                <TextBlock Text="Pre-dialysis vs. intradialytic nadir systolic BP (90 mmHg safety threshold)."
+                           FontSize="12" Foreground="#475569" TextWrapping="Wrap" />
+              </StackPanel>
+
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                <TextBlock Text="Sessions:" VerticalAlignment="Center" FontSize="12" Foreground="#475569" Margin="0,0,4,0" />
+                <Button x:Name="Window5Button"
+                        Classes="window-pill"
+                        Classes.active="{Binding IsWindow5Selected}"
+                        Content="5"
+                        Command="{Binding SetSessionWindowCommand}"
+                        CommandParameter="5" />
+                <Button x:Name="Window10Button"
+                        Classes="window-pill"
+                        Classes.active="{Binding IsWindow10Selected}"
+                        Content="10"
+                        Command="{Binding SetSessionWindowCommand}"
+                        CommandParameter="10" />
+                <Button x:Name="Window20Button"
+                        Classes="window-pill"
+                        Classes.active="{Binding IsWindow20Selected}"
+                        Content="20"
+                        Command="{Binding SetSessionWindowCommand}"
+                        CommandParameter="20" />
+              </StackPanel>
+            </Grid>
+
+            <!-- 3 Clean Summary KPI Chips -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+              <Border Grid.Column="0" Classes="kpi-chip">
+                <StackPanel Spacing="2">
+                  <TextBlock Text="AVG POST-SBP" FontSize="10.5" FontWeight="Bold" Foreground="#64748B" />
+                  <TextBlock Text="{Binding SessionAvgPostSbpText}"
+                             FontFamily="{StaticResource ClinicalMonoFont}" FontSize="16" FontWeight="Bold" Foreground="#0F172A" />
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="1" Classes="kpi-chip">
+                <StackPanel Spacing="2">
+                  <TextBlock Text="AVG UF" FontSize="10.5" FontWeight="Bold" Foreground="#64748B" />
+                  <TextBlock Text="{Binding SessionAvgUfText}"
+                             FontFamily="{StaticResource ClinicalMonoFont}" FontSize="16" FontWeight="Bold" Foreground="#0F172A" />
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="2" Classes="kpi-chip">
+                <StackPanel Spacing="2">
+                  <TextBlock Text="LAST spKt/V" FontSize="10.5" FontWeight="Bold" Foreground="#64748B" />
+                  <TextBlock Text="{Binding SessionLatestKtVText}"
+                             FontFamily="{StaticResource ClinicalMonoFont}" FontSize="16" FontWeight="Bold"
+                             Foreground="{Binding LatestKtVSeverityLevel, Converter={x:Static views:AnalyticsView.KtVSeverityBrushConverter}}" />
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <!-- Dual-Series BP Chart -->
+            <controls:ClinicalTrendChartControl x:Name="SessionTrendChart"
+                                                Title="Pre-Dialysis SBP vs Intradialytic Nadir SBP"
+                                                UnitLabel="mmHg"
+                                                SeriesPoints="{Binding SessionPreSbpPoints}"
+                                                SecondarySeriesPoints="{Binding SessionNadirSbpPoints}"
+                                                PrimarySeriesName="Pre-SBP"
+                                                SecondarySeriesName="Nadir SBP"
+                                                NormalLow="100"
+                                                NormalHigh="150"
+                                                CriticalThresholdLine="90"
+                                                CriticalThresholdLabel="90 mmHg Nadir90 Threshold"
+                                                EmptyStateMessage="{Binding SessionEmptyStateMessage}"
+                                                MinHeight="230"
+                                                MaxHeight="270"
+                                                HorizontalAlignment="Stretch" />
+
+            <!-- Concise Recent Sessions List -->
+            <StackPanel Spacing="6">
+              <TextBlock Text="Recent Sessions" FontSize="13.5" FontWeight="SemiBold" Foreground="#0F172A" />
+              <TextBlock Text="{Binding SessionEmptyStateMessage}"
+                         IsVisible="{Binding !HasSessionRows}"
+                         FontSize="12" Foreground="#64748B" FontStyle="Italic" TextWrapping="Wrap" />
+
+              <Border IsVisible="{Binding HasSessionRows}"
+                      Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="10,8">
+                <StackPanel Spacing="4">
+                  <Grid ColumnDefinitions="1.1*,1.2*,1*,1.1*,0.8*,0.8*" Margin="6,2">
+                    <TextBlock Grid.Column="0" Text="Date" FontSize="11" FontWeight="Bold" Foreground="#475569" />
+                    <TextBlock Grid.Column="1" Text="Pre / Post BP" FontSize="11" FontWeight="Bold" Foreground="#475569" />
+                    <TextBlock Grid.Column="2" Text="Nadir BP" FontSize="11" FontWeight="Bold" Foreground="#475569" />
+                    <TextBlock Grid.Column="3" Text="UF (mL/h)" FontSize="11" FontWeight="Bold" Foreground="#475569" />
+                    <TextBlock Grid.Column="4" Text="spKt/V" FontSize="11" FontWeight="Bold" Foreground="#475569" />
+                    <TextBlock Grid.Column="5" Text="Incidents" FontSize="11" FontWeight="Bold" Foreground="#475569" />
+                  </Grid>
+                  <ItemsControl x:Name="SessionRowsGrid" ItemsSource="{Binding SessionRows}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Border BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="6,6">
+                          <Grid ColumnDefinitions="1.1*,1.2*,1*,1.1*,0.8*,0.8*">
+                            <TextBlock Grid.Column="0" Text="{Binding SessionDate}" FontFamily="{StaticResource ClinicalMonoFont}" FontSize="11.5" Foreground="#0F172A" />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2">
+                              <TextBlock Text="{Binding PreSystolicBp}" FontFamily="{StaticResource ClinicalMonoFont}" FontSize="11.5" Foreground="#0F172A" />
+                              <TextBlock Text="/" FontSize="11.5" Foreground="#64748B" />
+                              <TextBlock Text="{Binding PostSystolicBp, TargetNullValue='--'}" FontFamily="{StaticResource ClinicalMonoFont}" FontSize="11.5" Foreground="#0F172A" />
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="{Binding NadirSystolicBp, StringFormat='{}{0:0.#} mmHg', TargetNullValue='--'}"
+                                       FontFamily="{StaticResource ClinicalMonoFont}" FontSize="11.5" Foreground="#0F172A" />
+                            <TextBlock Grid.Column="3" Text="{Binding EffectiveUfRateMlHr, StringFormat='{}{0:0.#}'}"
+                                       FontFamily="{StaticResource ClinicalMonoFont}" FontSize="11.5" Foreground="#0F172A" />
+                            <TextBlock Grid.Column="4" Text="{Binding CalculatedSpKtV, StringFormat='{}{0:0.##}', TargetNullValue='--'}"
+                                       FontFamily="{StaticResource ClinicalMonoFont}" FontSize="11.5" FontWeight="SemiBold" Foreground="#0F766E" />
+                            <TextBlock Grid.Column="5" Text="{Binding IncidentCount}"
+                                       FontFamily="{StaticResource ClinicalMonoFont}" FontSize="11.5" Foreground="#D97706" />
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <!-- Collapsible Drawer 1: Kt/V Adequacy Calculator -->
+        <Expander x:Name="KtvCalculatorExpander"
+                  Classes="clean-expander"
+                  Header="Kt/V Adequacy Calculator"
+                  IsExpanded="{Binding IsKtvDrawerOpen, Mode=TwoWay}">
+          <StackPanel Spacing="12" Margin="0,10,0,2">
+            <TextBlock Text="Daugirdas II formula: spKt/V = -ln(R - 0.008 * t) + (4 - 3.5 * R) * (UF / W)"
+                       FontFamily="{StaticResource ClinicalMonoFont}" FontSize="11" FontWeight="Normal" Foreground="#475569" TextWrapping="Wrap" />
+
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+              <StackPanel Grid.Row="0" Grid.Column="0" Spacing="3">
+                <TextBlock Text="Pre-Dialysis BUN (mg/dL)" FontSize="11.5" FontWeight="Normal" Foreground="#334155" />
+                <TextBox x:Name="KtVPreBunTextBox" Classes="clinical" MinWidth="0" Text="{Binding KtVPreBun}" Watermark="e.g. 65" KeyDown="OnKtVInputKeyDown" />
+              </StackPanel>
+              <StackPanel Grid.Row="0" Grid.Column="1" Spacing="3">
+                <TextBlock Text="Post-Dialysis BUN (mg/dL)" FontSize="11.5" FontWeight="Normal" Foreground="#334155" />
+                <TextBox x:Name="KtVPostBunTextBox" Classes="clinical" MinWidth="0" Text="{Binding KtVPostBun}" Watermark="e.g. 19" KeyDown="OnKtVInputKeyDown" />
+              </StackPanel>
+              <StackPanel Grid.Row="0" Grid.Column="2" Spacing="3">
+                <TextBlock Text="Session Duration (hr)" FontSize="11.5" FontWeight="Normal" Foreground="#334155" />
+                <TextBox x:Name="KtVDurationTextBox" Classes="clinical" MinWidth="0" Text="{Binding KtVDurationHours}" Watermark="e.g. 4" KeyDown="OnKtVInputKeyDown" />
+              </StackPanel>
+
+              <StackPanel Grid.Row="1" Grid.Column="0" Spacing="3">
+                <TextBlock Text="Ultrafiltration Volume (L)" FontSize="11.5" FontWeight="Normal" Foreground="#334155" />
+                <TextBox x:Name="KtVUfLitersTextBox" Classes="clinical" MinWidth="0" Text="{Binding KtVUfLiters}" Watermark="e.g. 2" KeyDown="OnKtVInputKeyDown" />
+              </StackPanel>
+              <StackPanel Grid.Row="1" Grid.Column="1" Spacing="3">
+                <TextBlock Text="Post-Dialysis Weight (kg)" FontSize="11.5" FontWeight="Normal" Foreground="#334155" />
+                <TextBox x:Name="KtVPostWeightTextBox" Classes="clinical" MinWidth="0" Text="{Binding KtVPostWeightKg}" Watermark="e.g. 72" KeyDown="OnKtVInputKeyDown" />
+              </StackPanel>
+              <Button x:Name="ComputeKtVButton" Grid.Row="1" Grid.Column="2" Classes="pill primary"
+                      Content="Compute spKt/V"
+                      Command="{Binding ComputeKtVCommand}"
+                      VerticalAlignment="Bottom" Padding="14,8" HorizontalAlignment="Stretch" />
+            </Grid>
+
+            <Border x:Name="KtVResultBanner" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="12">
+              <StackPanel Spacing="4">
+                <Grid ColumnDefinitions="*,*">
+                  <StackPanel Grid.Column="0">
+                    <TextBlock Text="spKt/V" FontSize="10.5" FontWeight="Bold" Foreground="#64748B" />
+                    <TextBlock Text="{Binding KtVSpKtVFormatted}" FontFamily="{StaticResource ClinicalMonoFont}" FontSize="19" FontWeight="Bold" Foreground="#0F172A" />
+                  </StackPanel>
+                  <StackPanel Grid.Column="1">
+                    <TextBlock Text="URR" FontSize="10.5" FontWeight="Bold" Foreground="#64748B" />
+                    <TextBlock Text="{Binding KtVUrrFormatted}" FontFamily="{StaticResource ClinicalMonoFont}" FontSize="19" FontWeight="Bold" Foreground="#0F172A" />
+                  </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding KtVStatusBadgeText}" FontSize="12" FontWeight="Bold" Foreground="#0F766E"
+                           IsVisible="{Binding !KtVIsInadequateWarning}" />
+                <TextBlock Text="{Binding KtVStatusBadgeText}" FontSize="12" FontWeight="Bold" Foreground="#D97706"
+                           IsVisible="{Binding KtVIsInadequateWarning}" />
+                <TextBlock Text="{Binding KtVFormattedInputsSummary}"
+                           IsVisible="{Binding KtVFormattedInputsSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                           FontSize="11.5" FontWeight="Normal" Foreground="#334155" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding KtVResult.ClinicalSummary, FallbackValue='', TargetNullValue=''}"
+                           FontSize="11.5" FontWeight="Normal" Foreground="#334155" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding KtVErrorMessage}"
+                           IsVisible="{Binding KtVErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                           FontSize="11.5" FontWeight="SemiBold" Foreground="#D97706" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding KtVResult.CitationLabel, FallbackValue='Daugirdas II Single-Pool Kt/V (LOINC 70965-9; KDIGO/KDOQI >= 1.2)', TargetNullValue='Daugirdas II Single-Pool Kt/V (LOINC 70965-9; KDIGO/KDOQI >= 1.2)'}"
+                           FontSize="10.5" FontWeight="Normal" Foreground="#64748B" TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Expander>
+
+        <!-- Collapsible Drawer 2: Dry Weight Log -->
+        <Expander x:Name="DryWeightLogExpander"
+                  Classes="clean-expander"
+                  Header="Dry Weight Log"
+                  IsExpanded="{Binding IsDryWeightLogOpen, Mode=TwoWay}">
+          <StackPanel Spacing="8" Margin="0,10,0,2">
+            <TextBlock Text="No target dry weight changes recorded yet."
+                       IsVisible="{Binding !HasDryWeightHistory}"
+                       FontSize="12" FontWeight="Normal" Foreground="#64748B" FontStyle="Italic" />
+
+            <ItemsControl x:Name="DryWeightTimelineList" ItemsSource="{Binding DryWeightHistory}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8" Padding="12,8" Margin="0,3">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                      <TextBlock Grid.Column="0" Text="{Binding TargetDryWeightKg, StringFormat='{}{0:0.##} kg'}"
+                                 FontFamily="{StaticResource ClinicalMonoFont}" FontSize="13.5" FontWeight="Bold" Foreground="#0F172A" VerticalAlignment="Center" Margin="0,0,12,0" />
+                      <StackPanel Grid.Column="1" Spacing="2">
+                        <TextBlock Text="{Binding ClinicalRationale}" FontSize="12" FontWeight="Normal" Foreground="#334155" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding EffectiveFromUtc, Converter={x:Static views:AnalyticsView.HumanTimestampConverter}, StringFormat='Effective: {0}'}"
+                                   FontSize="11" FontWeight="Normal" Foreground="#64748B" />
+                      </StackPanel>
+                      <Border Grid.Column="2" Background="#E0F2FE" CornerRadius="10" Padding="8,2" VerticalAlignment="Center"
+                              IsVisible="{Binding EffectiveToUtc, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+                        <TextBlock Text="CURRENT" FontSize="10" FontWeight="Bold" Foreground="#0284C7" />
+                      </Border>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Expander>
+
+        <!-- Honest Architectural Notice for Hardware-Deferred Telemetry (Quiet Footer) -->
+        <Border x:Name="HardwareDeferredCard" Background="#ECFEFF" BorderBrush="#A5F3FC" BorderThickness="1" CornerRadius="10" Padding="12,9">
+          <StackPanel Spacing="2">
+            <TextBlock Text="{Binding HardwareDeferredNoticeTitle}"
+                       FontSize="11.5" FontWeight="SemiBold" Foreground="#0E7490" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding HardwareDeferredNoticeBody}"
+                       FontSize="11" Foreground="#155E75" TextWrapping="Wrap" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

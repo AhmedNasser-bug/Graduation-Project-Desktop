@@ -1,0 +1,443 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:infra="clr-namespace:NephroEdge.Desktop.Infrastructure">
+  <Styles.Resources>
+    <infra:ClinicalDisplayConverter x:Key="ClinicalDisplayConverter" />
+
+    <!-- IEC 60601-1-8 Multi-Modal Clinical & Technical Palette -->
+    <Color x:Key="HighRedColor">#D92D20</Color>
+    <Color x:Key="HighRedSoftColor">#FEF2F2</Color>
+    <Color x:Key="HighRedInkColor">#991B1B</Color>
+
+    <Color x:Key="MediumAmberColor">#D97706</Color>
+    <Color x:Key="MediumAmberSoftColor">#FFFBEB</Color>
+    <Color x:Key="MediumAmberInkColor">#92400E</Color>
+
+    <Color x:Key="TechCyanColor">#0E7490</Color>
+    <Color x:Key="TechCyanSoftColor">#ECFEFF</Color>
+    <Color x:Key="TechCyanInkColor">#155E75</Color>
+
+    <Color x:Key="SteadyCyanColor">#0E7490</Color>
+    <Color x:Key="SteadyCyanSoftColor">#ECFEFF</Color>
+    <Color x:Key="SteadyCyanInkColor">#155E75</Color>
+
+    <Color x:Key="SafeTealColor">#0F766E</Color>
+    <Color x:Key="SafeTealSoftColor">#F0FDFA</Color>
+    <Color x:Key="SafeTealInkColor">#115E59</Color>
+
+    <Color x:Key="CanvasColor">#F8FAFC</Color>
+    <Color x:Key="SurfaceColor">#FFFFFF</Color>
+    <Color x:Key="SurfaceSubtleColor">#F1F5F9</Color>
+    <Color x:Key="BorderColor">#E2E8F0</Color>
+    <Color x:Key="InkColor">#0F172A</Color>
+    <Color x:Key="MutedInkColor">#475569</Color>
+
+    <SolidColorBrush x:Key="HighRedBrush" Color="{StaticResource HighRedColor}" />
+    <SolidColorBrush x:Key="HighRedSoftBrush" Color="{StaticResource HighRedSoftColor}" />
+    <SolidColorBrush x:Key="HighRedInkBrush" Color="{StaticResource HighRedInkColor}" />
+
+    <SolidColorBrush x:Key="MediumAmberBrush" Color="{StaticResource MediumAmberColor}" />
+    <SolidColorBrush x:Key="MediumAmberSoftBrush" Color="{StaticResource MediumAmberSoftColor}" />
+    <SolidColorBrush x:Key="MediumAmberInkBrush" Color="{StaticResource MediumAmberInkColor}" />
+
+    <SolidColorBrush x:Key="TechCyanBrush" Color="{StaticResource TechCyanColor}" />
+    <SolidColorBrush x:Key="TechCyanSoftBrush" Color="{StaticResource TechCyanSoftColor}" />
+    <SolidColorBrush x:Key="TechCyanInkBrush" Color="{StaticResource TechCyanInkColor}" />
+
+    <SolidColorBrush x:Key="SteadyCyanBrush" Color="{StaticResource SteadyCyanColor}" />
+    <SolidColorBrush x:Key="SteadyCyanSoftBrush" Color="{StaticResource SteadyCyanSoftColor}" />
+    <SolidColorBrush x:Key="SteadyCyanInkBrush" Color="{StaticResource SteadyCyanInkColor}" />
+
+    <SolidColorBrush x:Key="SafeTealBrush" Color="{StaticResource SafeTealColor}" />
+    <SolidColorBrush x:Key="SafeTealSoftBrush" Color="{StaticResource SafeTealSoftColor}" />
+    <SolidColorBrush x:Key="SafeTealInkBrush" Color="{StaticResource SafeTealInkColor}" />
+
+    <SolidColorBrush x:Key="CanvasBrush" Color="{StaticResource CanvasColor}" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="SurfaceSubtleBrush" Color="{StaticResource SurfaceSubtleColor}" />
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}" />
+    <SolidColorBrush x:Key="InkBrush" Color="{StaticResource InkColor}" />
+    <SolidColorBrush x:Key="MutedInkBrush" Color="{StaticResource MutedInkColor}" />
+
+    <FontFamily x:Key="ClinicalSansFont">Inter, Segoe UI, Arial</FontFamily>
+    <FontFamily x:Key="ClinicalMonoFont">Cascadia Mono, Consolas, Courier New</FontFamily>
+  </Styles.Resources>
+
+  <Style Selector="Window">
+    <Setter Property="Background" Value="{StaticResource CanvasBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+    <Setter Property="FontFamily" Value="{StaticResource ClinicalSansFont}" />
+    <Setter Property="FontSize" Value="13" />
+  </Style>
+
+  <!-- 3-Tier Clinical Clarity Typography -->
+  <Style Selector="TextBlock.hero">
+    <Setter Property="FontSize" Value="22" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.h1">
+    <Setter Property="FontSize" Value="22" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.title">
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.h2">
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.h3">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.section-label">
+    <Setter Property="FontSize" Value="11" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="LetterSpacing" Value="0.5" />
+    <Setter Property="Foreground" Value="{StaticResource MutedInkBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.muted">
+    <Setter Property="FontSize" Value="11.5" />
+    <Setter Property="Foreground" Value="{StaticResource MutedInkBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.telemetry-num">
+    <Setter Property="FontFamily" Value="{StaticResource ClinicalMonoFont}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.telemetry-hero">
+    <Setter Property="FontFamily" Value="{StaticResource ClinicalMonoFont}" />
+    <Setter Property="FontSize" Value="22" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <!-- Card & Container Surfaces -->
+  <Style Selector="Border.card">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="12" />
+    <Setter Property="Padding" Value="18" />
+    <Setter Property="BoxShadow" Value="0 2 8 0 #0D0F172A" />
+  </Style>
+
+  <Style Selector="Border.card-subtle">
+    <Setter Property="Background" Value="{StaticResource SurfaceSubtleBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="10" />
+    <Setter Property="Padding" Value="14" />
+  </Style>
+
+  <Style Selector="Border.banner-card">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="0,0,0,1" />
+    <Setter Property="Padding" Value="20,10" />
+    <Setter Property="BoxShadow" Value="0 1 4 0 #080F172A" />
+  </Style>
+
+  <!-- Pill Badges -->
+  <Style Selector="Border.pill-badge">
+    <Setter Property="CornerRadius" Value="16" />
+    <Setter Property="Padding" Value="10,4" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="Border.badge-high">
+    <Setter Property="Background" Value="{StaticResource HighRedBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource HighRedBrush}" />
+  </Style>
+
+  <Style Selector="Border.badge-amber">
+    <Setter Property="Background" Value="{StaticResource MediumAmberSoftBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource MediumAmberBrush}" />
+  </Style>
+
+  <Style Selector="Border.badge-cyan">
+    <Setter Property="Background" Value="{StaticResource TechCyanSoftBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource TechCyanBrush}" />
+  </Style>
+
+  <Style Selector="Border.badge-teal">
+    <Setter Property="Background" Value="{StaticResource SafeTealSoftBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource SafeTealBrush}" />
+  </Style>
+
+  <!-- Pill Buttons -->
+  <Style Selector="Button.pill">
+    <Setter Property="CornerRadius" Value="20" />
+    <Setter Property="Padding" Value="16,8" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="Button.primary">
+    <Setter Property="Background" Value="{StaticResource SafeTealBrush}" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+
+  <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource SafeTealInkBrush}" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+
+  <Style Selector="Button.secondary">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="Button.secondary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource SurfaceSubtleBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="Button.danger">
+    <Setter Property="Background" Value="{StaticResource HighRedBrush}" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+
+  <Style Selector="Button.danger:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource HighRedInkBrush}" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+
+  <Style Selector="Button.warning">
+    <Setter Property="Background" Value="{StaticResource MediumAmberSoftBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource MediumAmberInkBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource MediumAmberBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="Button.warning:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#FEF3C7" />
+    <Setter Property="Foreground" Value="{StaticResource MediumAmberInkBrush}" />
+  </Style>
+
+  <Style Selector="Button.cyan">
+    <Setter Property="Background" Value="{StaticResource TechCyanSoftBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource TechCyanInkBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource TechCyanBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="Button.cyan:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#CFFAFE" />
+    <Setter Property="Foreground" Value="{StaticResource TechCyanInkBrush}" />
+  </Style>
+
+  <!-- Left Navigation Rail Buttons -->
+  <Style Selector="Button.nav-rail">
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="12,9" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Foreground" Value="{StaticResource MutedInkBrush}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="Button.nav-rail:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource SurfaceSubtleBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="Button.nav-rail.active">
+    <Setter Property="Background" Value="{StaticResource SafeTealSoftBrush}" />
+    <Setter Property="BorderBrush" Value="#99F6E4" />
+    <Setter Property="Foreground" Value="{StaticResource SafeTealInkBrush}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+
+  <Style Selector="Button.nav-rail.active:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource SafeTealSoftBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource SafeTealInkBrush}" />
+  </Style>
+
+  <!-- Clinical Inputs -->
+  <Style Selector="TextBox.clinical">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="10,7" />
+  </Style>
+
+  <Style Selector="TextBox.clinical:focus /template/ Border#PART_BorderElement">
+    <Setter Property="BorderBrush" Value="{StaticResource SafeTealBrush}" />
+    <Setter Property="BorderThickness" Value="1.5" />
+  </Style>
+
+  <Style Selector="ComboBox.clinical">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="8" />
+  </Style>
+
+  <Style Selector="ComboBox.clinical:focus">
+    <Setter Property="BorderBrush" Value="{StaticResource SafeTealBrush}" />
+  </Style>
+
+  <!-- Progressive Disclosure Expander -->
+  <Style Selector="Expander">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="10" />
+    <Setter Property="Padding" Value="14,10" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+  </Style>
+
+  <Style Selector="Expander /template/ ToggleButton#ExpanderHeader">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="14,10" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="Expander /template/ ToggleButton#ExpanderHeader:pointerover">
+    <Setter Property="Background" Value="{StaticResource SurfaceSubtleBrush}" />
+  </Style>
+
+  <!-- Segmented Pill Switcher -->
+  <Style Selector="Border.seg-bar">
+    <Setter Property="Background" Value="{StaticResource SurfaceSubtleBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="10" />
+    <Setter Property="Padding" Value="3" />
+  </Style>
+
+  <Style Selector="Button.seg-tab">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{StaticResource MutedInkBrush}" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="CornerRadius" Value="7" />
+    <Setter Property="Padding" Value="12,6" />
+    <Setter Property="FontSize" Value="12.5" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="Button.seg-tab:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#E2E8F0" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="Button.seg-tab.active">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+
+  <Style Selector="Button.seg-tab.active:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <!-- Thin UF Progress Bar (MinWidth overridden from Fluent 200px default) -->
+  <Style Selector="ProgressBar.uf-progress">
+    <Setter Property="MinWidth" Value="40" />
+    <Setter Property="Height" Value="4" />
+    <Setter Property="MinHeight" Value="4" />
+    <Setter Property="CornerRadius" Value="2" />
+    <Setter Property="Background" Value="{StaticResource SurfaceSubtleBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource SafeTealBrush}" />
+  </Style>
+
+  <Style Selector="ProgressBar.uf-progress.warning">
+    <Setter Property="Foreground" Value="{StaticResource MediumAmberBrush}" />
+  </Style>
+
+  <Style Selector="ProgressBar.uf-progress.alarm">
+    <Setter Property="Foreground" Value="{StaticResource HighRedBrush}" />
+  </Style>
+
+  <!-- Unified Summary & Filter Chips -->
+  <Style Selector="Button.filter-chip">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource MutedInkBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="16" />
+    <Setter Property="Padding" Value="10,5" />
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="Button.filter-chip:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource SurfaceSubtleBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource SafeTealBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+  </Style>
+
+  <Style Selector="Button.filter-chip.active">
+    <Setter Property="Background" Value="{StaticResource SafeTealSoftBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource SafeTealBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource SafeTealInkBrush}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+
+  <Style Selector="Button.filter-chip.active-danger">
+    <Setter Property="Background" Value="{StaticResource HighRedSoftBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource HighRedBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource HighRedInkBrush}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+
+  <Style Selector="Button.filter-chip.active-amber">
+    <Setter Property="Background" Value="{StaticResource MediumAmberSoftBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource MediumAmberBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource MediumAmberInkBrush}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+
+  <!-- Interactive KPI Card Buttons (Legacy Shared Surface) -->
+  <Style Selector="Button.kpi-card">
+    <Setter Property="Background" Value="{StaticResource SurfaceSubtleBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="10" />
+    <Setter Property="Padding" Value="10,7" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="Button.kpi-card:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="BorderBrush" Value="{StaticResource TechCyanBrush}" />
+  </Style>
+</Styles>
