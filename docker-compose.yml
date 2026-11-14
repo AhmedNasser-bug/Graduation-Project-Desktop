@@ -1,0 +1,13 @@
+services:
+  desktop-tests:
+    build:
+      context: ..
+      dockerfile: desktop/Dockerfile
+    container_name: nephroguard-desktop-tests
+    environment:
+      - NEPHROEDGE_SCREENSHOT_DIR=/tmp/nephroedge-screenshots
+    volumes:
+      - desktop_test_artifacts:/tmp/nephroedge-screenshots
+
+volumes:
+  desktop_test_artifacts:

@@ -8,7 +8,7 @@
 
 **Why:** Aligns repository ownership across all five `xByteA` graduation project repositories for team onboarding.
 
-**Context:** Current `origin` is hosted privately at `https://github.com/AhmedNasser-bug/Graduation-Project-Desktop.git` because `xByteA/Graduation-Project-Desktop` had not been created during the `v0.2.0.0` ship window.
+**Context:** Current `origin` is hosted publicly at `https://github.com/AhmedNasser-bug/Graduation-Project-Desktop.git` because `xByteA/Graduation-Project-Desktop` had not been created during the `v0.2.0.0` ship window.
 
 **Effort:** S
 **Priority:** P3

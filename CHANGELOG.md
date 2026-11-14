@@ -2,6 +2,16 @@
 
 All notable changes to the NephroEdge Clinic Workstation Desktop (`Graduation-Project-Desktop`) are documented in this file.
 
+## [0.2.1.0] - 2026-11-15
+
+### Added
+- One-command repeatable workstation setup scripts (`setup.ps1`, `setup.sh`) with automatic sibling `xByteA/Graduation-Project-Backend` (`feat/analytics-sync-refactor`) provisioning, `-VerifyOnly`/`--verify-only`, `-SkipTests`/`--skip-tests`, and `-BackendDir` overrides.
+- Reproducible container verification suite (`Dockerfile`, `docker-compose.yml`, `.dockerignore`) targeting `mcr.microsoft.com/dotnet/sdk:9.0` with Avalonia Headless + Skia (`-Docker` / `--docker`).
+
+### Changed
+- Updated `README.md` with cross-platform quick-start instructions, verified public repository links (`Grad_project_landing`, `Graduation-Project-Mobile`), and direct pointers to `xByteA/Graduation-Project-Documentation` (`ADR-007`/`ADR-008`, `API_CONTRACTS_V1.md`).
+- Updated `TODOS.md` remote visibility note (`PUBLIC` under `AhmedNasser-bug`).
+
 ## [0.2.0.0] - 2026-11-13
 
 ### Added
