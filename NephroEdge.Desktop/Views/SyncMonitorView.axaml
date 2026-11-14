@@ -1,0 +1,583 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:NephroEdge.Desktop.Views"
+             x:Class="NephroEdge.Desktop.Views.SyncMonitorView">
+  <UserControl.Styles>
+    <Style Selector="Border.workspace-card">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="18" />
+    </Style>
+
+    <Style Selector="Border.diag-tile">
+      <Setter Property="Background" Value="#F8FAFC" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="12,9" />
+    </Style>
+
+    <Style Selector="TextBlock.field-label">
+      <Setter Property="FontSize" Value="11.5" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="#475569" />
+      <Setter Property="Margin" Value="0,0,0,4" />
+    </Style>
+
+    <Style Selector="Button.pill.secondary.active-bridge">
+      <Setter Property="Background" Value="#ECFEFF" />
+      <Setter Property="BorderBrush" Value="#0891B2" />
+      <Setter Property="Foreground" Value="#0E7490" />
+      <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style Selector="ListBox#ConflictQueueListBox">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style Selector="ListBox#ConflictQueueListBox ListBoxItem">
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Margin" Value="0,0,0,8" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="CornerRadius" Value="10" />
+    </Style>
+    <Style Selector="ListBox#ConflictQueueListBox ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="ListBox#ConflictQueueListBox ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="ListBox#ConflictQueueListBox ListBoxItem Border.handshake-card">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="12,10" />
+    </Style>
+    <Style Selector="ListBox#ConflictQueueListBox ListBoxItem:pointerover Border.handshake-card">
+      <Setter Property="Background" Value="#F8FAFC" />
+      <Setter Property="BorderBrush" Value="#CBD5E1" />
+    </Style>
+    <Style Selector="ListBox#ConflictQueueListBox ListBoxItem:selected Border.handshake-card">
+      <Setter Property="Background" Value="#ECFEFF" />
+      <Setter Property="BorderBrush" Value="#0891B2" />
+      <Setter Property="BorderThickness" Value="1.5" />
+    </Style>
+
+    <Style Selector="ListBox#OutboxQueueListBox, ListBox#RecentRequestLogsListBox">
+      <Setter Property="Background" Value="#F8FAFC" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="6" />
+    </Style>
+
+    <Style Selector="Expander.clean-expander">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Foreground" Value="#0F172A" />
+      <Setter Property="FontSize" Value="13.5" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+  </UserControl.Styles>
+
+  <ScrollViewer x:Name="SyncMonitorScrollViewer"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+    <StackPanel Spacing="14" Margin="20,16,20,24">
+
+      <!-- Calm Header -->
+      <Grid ColumnDefinitions="*,12,Auto" MinWidth="0">
+        <StackPanel Grid.Column="0" Spacing="3" MinWidth="0">
+          <TextBlock Text="Nurse Sync"
+                     FontSize="20"
+                     FontWeight="Bold"
+                     Foreground="#0F172A" />
+          <TextBlock Text="Bedside order confirmations and clinician conflict reviews"
+                     FontSize="12.5"
+                     Foreground="#64748B"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <WrapPanel Grid.Column="2"
+                   Orientation="Horizontal"
+                   VerticalAlignment="Center">
+          <Border x:Name="ConflictQueueBadge"
+                  Background="{Binding ConflictBadgeBackgroundBrush}"
+                  BorderBrush="{Binding ConflictBadgeBorderBrush}"
+                  BorderThickness="1"
+                  CornerRadius="14"
+                  Padding="12,5"
+                  Margin="0,0,8,0"
+                  VerticalAlignment="Center">
+            <TextBlock Text="{Binding ConflictQueueBadgeText}"
+                       FontSize="11.5"
+                       FontWeight="Bold"
+                       Foreground="{Binding ConflictBadgeForegroundBrush}" />
+          </Border>
+
+          <Button x:Name="HeaderRefreshSyncButton"
+                  Classes="pill secondary"
+                  Command="{Binding RefreshDiagnosticsCommand}"
+                  Content="Refresh" />
+        </WrapPanel>
+      </Grid>
+
+      <!-- Resolution Confirmation Banner -->
+      <Border x:Name="ResolutionStatusBanner"
+              Background="#F0FDFA"
+              BorderBrush="#0F766E"
+              BorderThickness="1"
+              CornerRadius="10"
+              Padding="14,10"
+              IsVisible="{Binding HasResolutionFeedback}">
+        <TextBlock x:Name="ResolutionStatusText"
+                   Text="{Binding ResolutionFeedbackMessage}"
+                   FontSize="12.5"
+                   FontWeight="SemiBold"
+                   Foreground="#115E59"
+                   TextWrapping="Wrap" />
+      </Border>
+
+      <!-- Primary Board: Bedside Order Handshakes -->
+      <Border Classes="workspace-card">
+        <StackPanel Spacing="14">
+          <StackPanel Spacing="2">
+            <TextBlock Text="Bedside Order Handshakes"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       Foreground="#0F172A" />
+            <TextBlock Text="Select an order to view bedside confirmation status or resolve a scheduling mismatch."
+                       FontSize="12"
+                       Foreground="#64748B"
+                       TextWrapping="Wrap" />
+          </StackPanel>
+
+          <Grid ColumnDefinitions="0.95*,16,1.05*" MinWidth="0">
+
+            <!-- Left Column: Scannable Queue -->
+            <StackPanel Grid.Column="0" Spacing="10" MinWidth="0">
+              <ListBox x:Name="ConflictQueueListBox"
+                       ItemsSource="{Binding ConflictQueueItems}"
+                       SelectedItem="{Binding SelectedConflict, Mode=TwoWay}"
+                       MaxHeight="430">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <Border Classes="handshake-card">
+                      <StackPanel Spacing="6">
+                        <Grid ColumnDefinitions="*,8,Auto" MinWidth="0">
+                          <TextBlock Grid.Column="0"
+                                     FontSize="13"
+                                     FontWeight="Bold"
+                                     Foreground="#0F172A"
+                                     TextWrapping="Wrap">
+                            <TextBlock.Text>
+                              <MultiBinding Converter="{x:Static views:SyncMonitorView.PatientDisplayMultiConverter}">
+                                <Binding Path="PatientId" />
+                                <Binding Path="DataContext.PatientLookupRevision"
+                                         RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                <Binding Path="DataContext"
+                                         RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                              </MultiBinding>
+                            </TextBlock.Text>
+                          </TextBlock>
+
+                          <Border Grid.Column="2"
+                                  Background="{Binding Status, Converter={x:Static views:SyncMonitorView.HandshakeBadgeBgConverter}}"
+                                  BorderBrush="{Binding Status, Converter={x:Static views:SyncMonitorView.HandshakeBadgeBorderConverter}}"
+                                  BorderThickness="1"
+                                  CornerRadius="12"
+                                  Padding="9,3"
+                                  VerticalAlignment="Top">
+                            <TextBlock Text="{Binding Status, Converter={x:Static views:SyncMonitorView.HandshakePillLabelConverter}}"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       Foreground="{Binding Status, Converter={x:Static views:SyncMonitorView.HandshakeBadgeFgConverter}}" />
+                          </Border>
+                        </Grid>
+
+                        <TextBlock FontSize="12" Foreground="#334155" TextWrapping="Wrap">
+                          <Run Text="{Binding DirectiveType, Converter={x:Static views:SyncMonitorView.DirectiveTypeConverter}}" FontWeight="SemiBold" />
+                          <Run Text=" — " />
+                          <Run Text="{Binding IsmpFormattedDoseText, Converter={x:Static views:SyncMonitorView.CleanRouteDoseConverter}}" />
+                        </TextBlock>
+
+                        <TextBlock FontSize="11" Foreground="#64748B" TextWrapping="Wrap">
+                          <Run Text="{Binding CreatedAtUtc, Converter={x:Static views:SyncMonitorView.HumanTimestampConverter}}" />
+                          <Run Text=" · Rev " />
+                          <Run Text="{Binding ExpectedSyncVersion}" />
+                        </TextBlock>
+                      </StackPanel>
+                    </Border>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+
+              <Border Background="#F0FDFA"
+                      BorderBrush="#99F6E4"
+                      BorderThickness="1"
+                      CornerRadius="10"
+                      Padding="16"
+                      IsVisible="{Binding HasNoQueueItems}">
+                <StackPanel Spacing="4">
+                  <TextBlock Text="✓ All Bedside Orders Synchronized"
+                             FontSize="13.5"
+                             FontWeight="Bold"
+                             Foreground="#0F766E" />
+                  <TextBlock Text="No pending confirmations or clinician conflicts are waiting in the queue."
+                             FontSize="12"
+                             Foreground="#115E59"
+                             TextWrapping="Wrap" />
+                </StackPanel>
+              </Border>
+            </StackPanel>
+
+            <!-- Right Column: Selected Order Detail Card -->
+            <Border Grid.Column="2"
+                    Background="#F8FAFC"
+                    BorderBrush="{Binding RightPaneBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16"
+                    VerticalAlignment="Top"
+                    MinWidth="0">
+              <StackPanel Spacing="12">
+                <TextBlock Text="{Binding RightPaneHeaderTitle}"
+                           FontSize="11"
+                           FontWeight="Bold"
+                           Foreground="{Binding RightPaneHeaderBrush}"
+                           TextWrapping="Wrap" />
+
+                <!-- Selected Item Identity & Order Summary -->
+                <StackPanel Spacing="4" IsVisible="{Binding HasSelectedConflict}">
+                  <TextBlock Text="{Binding SelectedConflictPatientNameDisplay}"
+                             FontSize="16"
+                             FontWeight="Bold"
+                             Foreground="#0F172A"
+                             TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding SelectedConflictPatientIdsDisplay}"
+                             FontSize="11.5"
+                             FontFamily="{StaticResource ClinicalMonoFont}"
+                             Foreground="#64748B"
+                             TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding SelectedConflictSummaryDisplay}"
+                             FontSize="12.5"
+                             FontWeight="SemiBold"
+                             Foreground="#334155"
+                             TextWrapping="Wrap"
+                             Margin="0,4,0,0" />
+                  <TextBlock Text="{Binding SelectedConflictDirectiveDetailDisplay}"
+                             FontSize="12"
+                             Foreground="#475569"
+                             TextWrapping="Wrap"
+                             IsVisible="{Binding SelectedConflictDirectiveDetailDisplay, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                  <TextBlock Text="{Binding SelectedConflictFooterDisplay}"
+                             FontSize="11"
+                             FontFamily="{StaticResource ClinicalMonoFont}"
+                             Foreground="#64748B"
+                             TextWrapping="Wrap"
+                             Margin="0,2,0,0" />
+                </StackPanel>
+
+                <!-- Conflict Resolution Form (ONLY visible when selected item requires clinician resolution) -->
+                <StackPanel x:Name="ConflictResolutionFormPanel"
+                            Spacing="10"
+                            IsVisible="{Binding IsConflictResolutionVisible}">
+                  <Border Background="#FEF3C7"
+                          BorderBrush="#D97706"
+                          BorderThickness="1"
+                          CornerRadius="8"
+                          Padding="12,10">
+                    <TextBlock Text="{Binding SelectedConflictReasonDisplay}"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="{Binding RightPaneReasonBrush}"
+                               TextWrapping="Wrap" />
+                  </Border>
+
+                  <StackPanel>
+                    <TextBlock Text="Clinician Staff ID" Classes="field-label" />
+                    <TextBox x:Name="ClinicianStaffIdTextBox"
+                             Classes="clinical"
+                             Text="{Binding ClinicianStaffId}"
+                             Watermark="e.g. DR-MEND-01"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <StackPanel>
+                    <TextBlock Text="Reconciliation Notes" Classes="field-label" />
+                    <TextBox x:Name="ResolutionNotesTextBox"
+                             Classes="clinical"
+                             Text="{Binding ResolutionNotes}"
+                             Watermark="Document clinical review before acknowledging (Ctrl+Enter to submit)..."
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             MinHeight="72"
+                             MinWidth="0" />
+                  </StackPanel>
+
+                  <Button x:Name="ResolveConflictButton"
+                          Classes="pill warning"
+                          Command="{Binding ResolveConflictCommand}"
+                          Content="Acknowledge &amp; Resolve Conflict"
+                          HorizontalAlignment="Left" />
+                </StackPanel>
+
+                <!-- Calm Status Card (when inspecting confirmed, waiting, or empty queue) -->
+                <Border x:Name="CalmOrderStatusCard"
+                        Background="{Binding CalmStatusCardBackgroundBrush}"
+                        BorderBrush="{Binding CalmStatusCardBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        Padding="14"
+                        IsVisible="{Binding IsCalmStatusCardVisible}">
+                  <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding CalmStatusCardTitle}"
+                               FontSize="13.5"
+                               FontWeight="Bold"
+                               Foreground="{Binding RightPaneHeaderBrush}"
+                               TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding CalmStatusCardBody}"
+                               FontSize="12.5"
+                               Foreground="#334155"
+                               TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+
+                <!-- Patient Chart Action -->
+                <Button x:Name="OpenPatientChartButton"
+                        Classes="pill secondary"
+                        Command="{Binding OpenPatientChartCommand}"
+                        Content="Open Patient Chart →"
+                        IsVisible="{Binding HasSelectedConflict}"
+                        HorizontalAlignment="Left" />
+              </StackPanel>
+            </Border>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Collapsed Technical Tablet Connection & Logs Drawer -->
+      <Expander x:Name="TechnicalSyncExpander"
+                Classes="clean-expander"
+                Header="Technical Tablet Connection &amp; Logs (:5050)"
+                IsExpanded="False">
+        <StackPanel Spacing="14" Margin="0,12,0,2">
+
+          <!-- Bridge Header & Mode Controls -->
+          <Grid ColumnDefinitions="*,12,Auto" MinWidth="0">
+            <Border x:Name="SyncHostStatusBadge"
+                    Grid.Column="0"
+                    Background="#ECFEFF"
+                    BorderBrush="#0891B2"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="12,6"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+              <TextBlock x:Name="SyncHostStatusText"
+                         Text="{Binding HostStatusBadgeText}"
+                         FontSize="12"
+                         FontWeight="Bold"
+                         Foreground="#0E7490" />
+            </Border>
+
+            <WrapPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+              <Border Background="#F1F5F9"
+                      BorderBrush="#E2E8F0"
+                      BorderThickness="1"
+                      CornerRadius="12"
+                      Padding="3"
+                      Margin="0,0,8,4">
+                <StackPanel Orientation="Horizontal" Spacing="3">
+                  <Button x:Name="LocalhostAdbButton"
+                          Classes="pill secondary"
+                          Classes.active-bridge="{Binding IsLocalhostAdbSelected}"
+                          Command="{Binding SetLocalhostAdbCommand}"
+                          Content="USB ADB (127.0.0.1)" />
+                  <Button x:Name="ClinicLanButton"
+                          Classes="pill secondary"
+                          Classes.active-bridge="{Binding IsClinicLanSelected}"
+                          Command="{Binding SetClinicLanCommand}"
+                          Content="Clinic Wi-Fi LAN" />
+                </StackPanel>
+              </Border>
+              <Button x:Name="ToggleBindModeButton"
+                      IsVisible="False"
+                      Command="{Binding ToggleBindModeCommand}"
+                      Content="{Binding ToggleBindModeButtonText}" />
+              <Button x:Name="RefreshDiagnosticsButton"
+                      Classes="pill secondary"
+                      Command="{Binding RefreshDiagnosticsCommand}"
+                      Content="Refresh Diagnostics"
+                      Margin="0,0,0,4" />
+            </WrapPanel>
+          </Grid>
+
+          <!-- Host Operation Feedback -->
+          <Border Background="#ECFEFF"
+                  BorderBrush="#0891B2"
+                  BorderThickness="1"
+                  CornerRadius="8"
+                  Padding="12,8"
+                  IsVisible="{Binding HasHostOperationFeedback}">
+            <TextBlock Text="{Binding HostOperationFeedback}"
+                       FontSize="12"
+                       FontWeight="SemiBold"
+                       Foreground="#0E7490"
+                       TextWrapping="Wrap" />
+          </Border>
+
+          <!-- 2x2 Bridge Diagnostics Tiles -->
+          <Grid ColumnDefinitions="*,12,*" RowDefinitions="Auto,10,Auto" MinWidth="0">
+            <Border Grid.Row="0" Grid.Column="0" Classes="diag-tile" MinWidth="0">
+              <StackPanel Spacing="2">
+                <TextBlock Text="BRIDGE ENDPOINT" FontSize="10" FontWeight="Bold" Foreground="#64748B" />
+                <TextBlock x:Name="SyncHostBaseUriText"
+                           Text="{Binding BaseUri}"
+                           FontSize="12.5"
+                           FontWeight="SemiBold"
+                           FontFamily="{StaticResource ClinicalMonoFont}"
+                           Foreground="#0F172A"
+                           TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="2" Classes="diag-tile" MinWidth="0">
+              <StackPanel Spacing="2">
+                <TextBlock Text="ACTIVE BIND MODE" FontSize="10" FontWeight="Bold" Foreground="#64748B" />
+                <TextBlock x:Name="SyncHostBindModeText"
+                           Text="{Binding BindModeDisplay}"
+                           FontSize="12.5"
+                           FontWeight="SemiBold"
+                           Foreground="#0F172A"
+                           TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+
+            <Border Grid.Row="2" Grid.Column="0" Classes="diag-tile" MinWidth="0">
+              <StackPanel Spacing="2">
+                <TextBlock Text="REQUESTS HANDLED" FontSize="10" FontWeight="Bold" Foreground="#64748B" />
+                <TextBlock x:Name="SyncRequestsHandledText"
+                           Text="{Binding RequestsHandled}"
+                           FontSize="13.5"
+                           FontWeight="Bold"
+                           FontFamily="{StaticResource ClinicalMonoFont}"
+                           Foreground="#0F172A" />
+              </StackPanel>
+            </Border>
+
+            <Border Grid.Row="2" Grid.Column="2" Classes="diag-tile" MinWidth="0">
+              <StackPanel Spacing="2">
+                <TextBlock Text="LAST TABLET ACTIVITY" FontSize="10" FontWeight="Bold" Foreground="#64748B" />
+                <TextBlock Text="{Binding LastRequestUtcDisplay}"
+                           FontSize="12.5"
+                           FontWeight="SemiBold"
+                           Foreground="#0F172A"
+                           TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+          </Grid>
+
+          <!-- Pending Outbox & HTTP Logs -->
+          <Grid ColumnDefinitions="*,14,*" MinWidth="0">
+            <StackPanel Grid.Column="0" Spacing="8" MinWidth="0">
+              <Grid ColumnDefinitions="*,8,Auto" MinWidth="0">
+                <TextBlock Grid.Column="0"
+                           Text="Outbound Sync Queue"
+                           FontSize="13"
+                           FontWeight="Bold"
+                           Foreground="#0F172A"
+                           VerticalAlignment="Center" />
+                <Border x:Name="OutboxStatusBadge"
+                        Grid.Column="2"
+                        Background="#ECFEFF"
+                        BorderBrush="#0891B2"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="9,3">
+                  <TextBlock Text="{Binding OutboxBadgeText}"
+                             FontSize="11"
+                             FontWeight="Bold"
+                             Foreground="#0E7490" />
+                </Border>
+              </Grid>
+
+              <ListBox x:Name="OutboxQueueListBox"
+                       ItemsSource="{Binding PendingOutboxItems}"
+                       MaxHeight="190">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <Border Background="#FFFFFF"
+                            BorderBrush="#E2E8F0"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="9,6"
+                            Margin="0,0,0,4">
+                      <StackPanel Spacing="2">
+                        <TextBlock FontSize="11.5" FontWeight="SemiBold" Foreground="#0F172A" TextWrapping="Wrap">
+                          <Run Text="{Binding AggregateType}" />
+                          <Run Text=" · " />
+                          <Run Text="{Binding OperationType}" />
+                          <Run Text=" (" />
+                          <Run Text="{Binding SyncStatus}" />
+                          <Run Text=")" />
+                        </TextBlock>
+                        <TextBlock FontSize="10.5" Foreground="#64748B" TextWrapping="Wrap">
+                          <Run Text="{Binding AggregateId}" />
+                          <Run Text=" · " />
+                          <Run Text="{Binding CreatedAtUtc, Converter={x:Static views:SyncMonitorView.HumanTimestampConverter}}" />
+                        </TextBlock>
+                      </StackPanel>
+                    </Border>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+
+              <TextBlock Text="Outbound sync queue is empty."
+                         FontSize="12"
+                         Foreground="#64748B"
+                         IsVisible="{Binding HasNoOutboxItems}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Spacing="8" MinWidth="0">
+              <TextBlock Text="Recent Tablet HTTP Requests"
+                         FontSize="13"
+                         FontWeight="Bold"
+                         Foreground="#0F172A" />
+
+              <ListBox x:Name="RecentRequestLogsListBox"
+                       ItemsSource="{Binding RecentRequestLogs}"
+                       MaxHeight="190">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding}"
+                               FontSize="11"
+                               FontFamily="{StaticResource ClinicalMonoFont}"
+                               Foreground="#334155"
+                               TextWrapping="Wrap"
+                               Margin="4,3" />
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+
+              <TextBlock Text="No HTTP requests recorded in this session."
+                         FontSize="12"
+                         Foreground="#64748B"
+                         IsVisible="{Binding HasNoRequestLogs}" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Expander>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

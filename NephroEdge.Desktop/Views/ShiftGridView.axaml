@@ -1,0 +1,372 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:NephroEdge.Desktop.ViewModels"
+             x:Class="NephroEdge.Desktop.Views.ShiftGridView">
+  <UserControl.Styles>
+    <Style Selector="Button.filter-chip">
+      <Setter Property="Padding" Value="8,5" />
+    </Style>
+  </UserControl.Styles>
+  <Grid RowDefinitions="Auto,Auto,*" Margin="0,2,0,0">
+
+    <!-- Row 0: Plain Active Shift Header + Bed/Shift Context + Steady Technical Sync Notice -->
+    <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,10">
+      <TextBlock Grid.Column="0"
+                 Classes="hero"
+                 VerticalAlignment="Center"
+                 Text="Active Dialysis Shift" />
+
+      <StackPanel Grid.Column="1"
+                  Orientation="Horizontal"
+                  Spacing="10"
+                  VerticalAlignment="Center">
+        <TextBlock x:Name="ShiftHeaderSummaryText"
+                   Classes="muted"
+                   FontSize="12"
+                   VerticalAlignment="Center"
+                   Text="{Binding ShiftBedSummaryDisplay}" />
+
+        <!-- Technical Sync Notice: Strictly Steady Cyan #0E7490 or Amber #D97706 (NEVER Red) -->
+        <Button x:Name="ShiftSyncNoticeBanner"
+                Classes="pill"
+                Command="{Binding OpenSyncMonitorCommand}"
+                Background="{Binding ShiftSyncNoticeBackgroundBrush}"
+                BorderBrush="{Binding ShiftSyncNoticeBorderBrush}"
+                BorderThickness="1"
+                Padding="12,5"
+                VerticalAlignment="Center">
+          <TextBlock x:Name="ShiftSyncNoticeTextBlock"
+                     Text="{Binding ShiftSyncNoticeText}"
+                     FontSize="11.5"
+                     FontWeight="SemiBold"
+                     Foreground="{Binding ShiftSyncNoticeForegroundBrush}" />
+        </Button>
+      </StackPanel>
+    </Grid>
+
+    <!-- Row 1: Unified Single-Row Clickable Summary / Filter Toolbar -->
+    <StackPanel Grid.Row="1" Spacing="8" Margin="0,0,0,12">
+      <Border Background="{StaticResource SurfaceBrush}"
+              BorderBrush="{StaticResource BorderBrush}"
+              BorderThickness="1"
+              CornerRadius="12"
+              Padding="9,8">
+        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+          <!-- Clickable Filter Chips -->
+          <StackPanel Grid.Column="0"
+                      Orientation="Horizontal"
+                      Spacing="4"
+                      VerticalAlignment="Center">
+            <Button x:Name="FilterAllButton"
+                    Classes="filter-chip"
+                    Classes.active="{Binding IsAllFilterSelected}"
+                    Command="{Binding SetRiskFilterCommand}"
+                    CommandParameter="All">
+              <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                <TextBlock Text="All Beds" VerticalAlignment="Center" />
+                <TextBlock x:Name="TotalBedsKpiText"
+                           Classes="telemetry-num"
+                           FontSize="12"
+                           Text="{Binding TotalBedCount}"
+                           VerticalAlignment="Center" />
+              </StackPanel>
+            </Button>
+
+            <Button x:Name="FilterHighRedButton"
+                    Classes="filter-chip"
+                    Classes.active-danger="{Binding IsHighRedFilterSelected}"
+                    Command="{Binding SetRiskFilterCommand}"
+                    CommandParameter="HighRedOnly">
+              <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                <TextBlock Text="▲ High Alarms"
+                           Foreground="{DynamicResource HighRedInkBrush}"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center" />
+                <TextBlock x:Name="HighAlarmKpiText"
+                           Classes="telemetry-num"
+                           FontSize="12"
+                           Foreground="{DynamicResource HighRedInkBrush}"
+                           Text="{Binding HighAlarmCount}"
+                           VerticalAlignment="Center" />
+              </StackPanel>
+            </Button>
+
+            <Button x:Name="FilterWarningButton"
+                    Classes="filter-chip"
+                    Classes.active-amber="{Binding IsWarningFilterSelected}"
+                    Command="{Binding SetRiskFilterCommand}"
+                    CommandParameter="WarningOnly">
+              <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                <TextBlock Text="◆ Warnings"
+                           Foreground="{DynamicResource MediumAmberInkBrush}"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center" />
+                <TextBlock x:Name="WarningKpiText"
+                           Classes="telemetry-num"
+                           FontSize="12"
+                           Foreground="{DynamicResource MediumAmberInkBrush}"
+                           Text="{Binding MediumWarningCount}"
+                           VerticalAlignment="Center" />
+              </StackPanel>
+            </Button>
+
+            <Button x:Name="FilterPendingAckButton"
+                    Classes="filter-chip"
+                    Command="{Binding OpenSyncMonitorCommand}"
+                    ToolTip.Tip="Open Nurse Sync &amp; Orders">
+              <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                <TextBlock Text="Pending Ack"
+                           Foreground="{DynamicResource SteadyCyanInkBrush}"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center" />
+                <TextBlock x:Name="PendingAckKpiText"
+                           Classes="telemetry-num"
+                           FontSize="12"
+                           Foreground="{DynamicResource SteadyCyanInkBrush}"
+                           Text="{Binding PendingHandshakeCount}"
+                           VerticalAlignment="Center" />
+              </StackPanel>
+            </Button>
+
+            <Button x:Name="FilterIsolatedButton"
+                    Classes="filter-chip"
+                    Classes.active-amber="{Binding IsIsolatedFilterSelected}"
+                    Command="{Binding SetRiskFilterCommand}"
+                    CommandParameter="IsolatedOnly">
+              <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                <TextBlock Text="HBV+"
+                           Foreground="{DynamicResource MediumAmberInkBrush}"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center" />
+                <TextBlock x:Name="IsolationKpiText"
+                           Classes="telemetry-num"
+                           FontSize="12"
+                           Foreground="{DynamicResource MediumAmberInkBrush}"
+                           Text="{Binding IsolatedBedCount}"
+                           VerticalAlignment="Center" />
+              </StackPanel>
+            </Button>
+          </StackPanel>
+
+          <!-- Inline Bed / Patient Search -->
+          <TextBox x:Name="SearchFilterTextBox"
+                   Grid.Column="1"
+                   Classes="clinical"
+                   HorizontalAlignment="Stretch"
+                   MinWidth="140"
+                   Padding="8,5"
+                   Margin="6,0,6,0"
+                   VerticalAlignment="Center"
+                   Text="{Binding FilterText, Mode=TwoWay}"
+                   Watermark="Search bed or patient..." />
+
+          <!-- Compact Shift Selector -->
+          <StackPanel Grid.Column="2"
+                      Orientation="Horizontal"
+                      Spacing="5"
+                      Margin="0,0,6,0"
+                      VerticalAlignment="Center">
+            <TextBlock Classes="muted"
+                       FontSize="11.5"
+                       VerticalAlignment="Center"
+                       Text="Shift" />
+            <ComboBox x:Name="ShiftNumberComboBox"
+                      Classes="clinical"
+                      Width="52"
+                      Padding="6,4"
+                      ItemsSource="{Binding AvailableShifts}"
+                      SelectedItem="{Binding ShiftNumber, Mode=TwoWay}"
+                      ToolTip.Tip="Select shift (1-4)" />
+          </StackPanel>
+
+          <!-- Refresh -->
+          <Button x:Name="RefreshShiftBoardButton"
+                  Grid.Column="3"
+                  Classes="pill primary"
+                  FontSize="12"
+                  Padding="12,5"
+                  VerticalAlignment="Center"
+                  Command="{Binding RefreshCommand}"
+                  ToolTip.Tip="Refresh active shift (F5 / Ctrl+R)"
+                  Content="Refresh" />
+        </Grid>
+      </Border>
+
+      <Border IsVisible="{Binding HasLoadError}"
+              Classes="card-subtle"
+              Background="{DynamicResource MediumAmberSoftBrush}"
+              BorderBrush="{DynamicResource MediumAmberBrush}">
+        <TextBlock Text="{Binding LoadError}"
+                   Foreground="{DynamicResource MediumAmberInkBrush}"
+                   TextWrapping="Wrap"
+                   FontWeight="SemiBold" />
+      </Border>
+    </StackPanel>
+
+    <!-- Row 2: 4-Zone Responsive Bed Cards Grid -->
+    <ScrollViewer x:Name="ShiftGridScrollViewer"
+                  Grid.Row="2"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Spacing="10">
+        <Border IsVisible="{Binding HasNoFilteredBeds}"
+                Classes="card"
+                Padding="24">
+          <StackPanel Spacing="6" HorizontalAlignment="Center">
+            <TextBlock Classes="h3"
+                       HorizontalAlignment="Center"
+                       Text="No dialysis beds match the current shift or filter." />
+            <TextBlock Classes="muted"
+                       HorizontalAlignment="Center"
+                       Text="Try selecting All Beds, switching shifts (1-4), or clearing search text." />
+          </StackPanel>
+        </Border>
+
+        <ItemsControl x:Name="BedTilesItemsControl"
+                      ItemsSource="{Binding FilteredBeds}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border Width="{Binding $parent[UserControl].DataContext.BedCardWidth}"
+                      Margin="0,0,12,12"
+                      Padding="0"
+                      CornerRadius="12"
+                      ClipToBounds="True"
+                      Cursor="Hand"
+                      PointerPressed="OnBedCardPointerPressed"
+                      ToolTip.Tip="{Binding TriggerRuleSummary}"
+                      Background="{Binding AlarmCardBackgroundBrush}"
+                      BorderBrush="{Binding CardOuterHighlightBrush}"
+                      BorderThickness="{Binding AlarmBorderThickness}"
+                      BoxShadow="{Binding CardBoxShadow}">
+                <Grid ColumnDefinitions="10,*">
+                  <!-- Permanent 4px Left Semantic Edge Accent (IEC 60601-1-8) -->
+                  <Border Grid.Column="0"
+                          Width="4"
+                          Margin="6,10,0,10"
+                          CornerRadius="2"
+                          Background="{Binding SemanticEdgeAccentBrush}" />
+
+                  <StackPanel Grid.Column="1" Spacing="10" Margin="8,14,16,14">
+
+                    <!-- Zone 1: BED-XX + Single Status Pill -->
+                    <Grid ColumnDefinitions="*,Auto">
+                      <TextBlock Grid.Column="0"
+                                 Classes="telemetry-num"
+                                 FontSize="15"
+                                 FontWeight="Bold"
+                                 Foreground="{DynamicResource InkBrush}"
+                                 VerticalAlignment="Center"
+                                 Text="{Binding ChairOrBedNumber}" />
+
+                      <Border Grid.Column="1"
+                              CornerRadius="12"
+                              Padding="9,3"
+                              BorderThickness="1"
+                              Background="{Binding AlarmBadgeBackgroundBrush}"
+                              BorderBrush="{Binding AlarmBadgeBorderBrush}">
+                        <TextBlock FontSize="11"
+                                   FontWeight="Bold"
+                                   Foreground="{Binding AlarmBadgeForegroundBrush}"
+                                   Text="{Binding AlarmBadgeText}" />
+                      </Border>
+                    </Grid>
+
+                    <!-- Zone 2: Patient Name + Quiet MRN + Conditional HBV+ Amber Tag -->
+                    <StackPanel Spacing="2">
+                      <TextBlock FontSize="15"
+                                 FontWeight="SemiBold"
+                                 Foreground="{DynamicResource InkBrush}"
+                                 TextTrimming="CharacterEllipsis"
+                                 Text="{Binding PatientFullName}" />
+                      <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <TextBlock Classes="muted"
+                                   FontSize="11.5"
+                                   VerticalAlignment="Center"
+                                   Text="{Binding MedicalRecordNumber}" />
+                        <Border IsVisible="{Binding IsIsolationRequired}"
+                                Background="#B45309"
+                                CornerRadius="8"
+                                Padding="6,1"
+                                VerticalAlignment="Center">
+                          <TextBlock Text="HBV+"
+                                     FontSize="10"
+                                     FontWeight="Bold"
+                                     Foreground="#FFFFFF" />
+                        </Border>
+                      </StackPanel>
+                    </StackPanel>
+
+                    <!-- Zone 3: Hero Vitals in 2 Balanced Columns -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                      <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                        <TextBlock Classes="telemetry-hero"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="{Binding HeroBpForegroundBrush}"
+                                   Text="{Binding HeroBpDisplay}" />
+                        <TextBlock Classes="muted"
+                                   FontSize="11.5"
+                                   Text="{Binding PreBpDisplay}" />
+                      </StackPanel>
+
+                      <StackPanel Grid.Column="1" Spacing="4" VerticalAlignment="Center">
+                        <TextBlock Classes="telemetry-num"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource InkBrush}"
+                                   Text="{Binding HeartRateDisplay}" />
+                        <TextBlock Classes="muted"
+                                   FontSize="11.5"
+                                   Text="{Binding RemainingUfDisplay}" />
+                        <ProgressBar Classes="uf-progress"
+                                     Classes.alarm="{Binding IsHighAlarm}"
+                                     Classes.warning="{Binding IsMediumWarning}"
+                                     Minimum="0"
+                                     Maximum="100"
+                                     Value="{Binding UfProgressPercent}" />
+                      </StackPanel>
+                    </Grid>
+
+                    <Border Height="1" Background="#F1F5F9" />
+
+                    <!-- Zone 4: 1-Line Plain English Status + One Contextual Action Button -->
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                      <TextBlock Grid.Column="0"
+                                 FontSize="12"
+                                 Foreground="{Binding ConciseStatusForegroundBrush}"
+                                 FontWeight="{Binding ConciseStatusFontWeight}"
+                                 TextTrimming="CharacterEllipsis"
+                                 VerticalAlignment="Center"
+                                 Text="{Binding ConciseStatusText}" />
+
+                      <Button Grid.Column="1"
+                              Classes="pill"
+                              BorderThickness="1"
+                              FontSize="11.5"
+                              FontWeight="SemiBold"
+                              Padding="11,5"
+                              Background="{Binding PrimaryActionBackgroundBrush}"
+                              BorderBrush="{Binding PrimaryActionBorderBrush}"
+                              Foreground="{Binding PrimaryActionForegroundBrush}"
+                              Command="{Binding $parent[UserControl].DataContext.PrimaryActionCommand}"
+                              CommandParameter="{Binding}"
+                              Content="{Binding PrimaryActionText}" />
+                    </Grid>
+
+                  </StackPanel>
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+    </ScrollViewer>
+
+  </Grid>
+</UserControl>

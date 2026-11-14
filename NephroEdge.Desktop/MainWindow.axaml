@@ -1,0 +1,138 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:NephroEdge.Desktop.ViewModels"
+        xmlns:views="clr-namespace:NephroEdge.Desktop.Views"
+        xmlns:controls="clr-namespace:NephroEdge.Desktop.Controls"
+        x:Class="NephroEdge.Desktop.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="NephroEdge Clinical Workstation — Doctor Edition"
+        Width="1366"
+        Height="820"
+        MinWidth="960"
+        MinHeight="640">
+  <Grid ColumnDefinitions="200,*">
+    <!-- Left Navigation Rail -->
+    <Border Grid.Column="0"
+            Background="{StaticResource SurfaceBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="0,0,1,0"
+            Padding="14,18">
+      <DockPanel LastChildFill="True">
+        <!-- Brand & Nav Tabs -->
+        <StackPanel DockPanel.Dock="Top" Spacing="16">
+          <StackPanel Orientation="Horizontal" Spacing="10" Margin="2,0,0,0">
+            <Border Width="32"
+                    Height="32"
+                    CornerRadius="8"
+                    Background="{StaticResource SafeTealBrush}">
+              <TextBlock Text="NE"
+                         FontSize="13"
+                         FontWeight="Bold"
+                         Foreground="#FFFFFF"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center" />
+            </Border>
+            <StackPanel VerticalAlignment="Center" Spacing="1">
+              <TextBlock Text="NephroEdge"
+                         FontSize="15"
+                         FontWeight="Bold"
+                         Foreground="{StaticResource InkBrush}" />
+              <TextBlock Classes="muted"
+                         FontSize="11"
+                         Text="MD Workstation" />
+            </StackPanel>
+          </StackPanel>
+
+          <Border Height="1" Background="{StaticResource BorderBrush}" />
+
+          <StackPanel Spacing="4">
+            <Button x:Name="NavShiftGridButton"
+                    Classes="nav-rail"
+                    Classes.active="{Binding IsShiftGridActive}"
+                    Command="{Binding NavigateShiftGridCommand}"
+                    ToolTip.Tip="Active Shift (Ctrl+1)">
+              <TextBlock Text="Active Shift" VerticalAlignment="Center" />
+            </Button>
+
+            <Button x:Name="NavAnalyticsButton"
+                    Classes="nav-rail"
+                    Classes.active="{Binding IsAnalyticsActive}"
+                    Command="{Binding NavigateAnalyticsCommand}"
+                    ToolTip.Tip="Patient Trends (Ctrl+2)">
+              <TextBlock Text="Patient Trends" VerticalAlignment="Center" />
+            </Button>
+
+            <Button x:Name="NavSafetyRxButton"
+                    Classes="nav-rail"
+                    Classes.active="{Binding IsSafetyRxActive}"
+                    Command="{Binding NavigateSafetyRxCommand}"
+                    ToolTip.Tip="Orders &amp; Safety (Ctrl+3)">
+              <TextBlock Text="Orders &amp; Safety" VerticalAlignment="Center" />
+            </Button>
+
+            <Button x:Name="NavSyncMonitorButton"
+                    Classes="nav-rail"
+                    Classes.active="{Binding IsSyncMonitorActive}"
+                    Command="{Binding NavigateSyncMonitorCommand}"
+                    ToolTip.Tip="Nurse Sync (Ctrl+4)">
+              <TextBlock Text="Nurse Sync" VerticalAlignment="Center" />
+            </Button>
+          </StackPanel>
+        </StackPanel>
+
+        <!-- Steady Cyan Sync Status Card (IEC 60601-1-8: NEVER Red for Technical Status) -->
+        <Border x:Name="ShellSyncIndicatorCard"
+                DockPanel.Dock="Bottom"
+                Classes="card-subtle"
+                Padding="12,10"
+                Cursor="Hand"
+                PointerPressed="OnShellSyncCardPointerPressed"
+                ToolTip.Tip="Click to inspect tablet sync · F5 Refresh"
+                Background="{StaticResource SteadyCyanSoftBrush}"
+                BorderBrush="{StaticResource SteadyCyanBrush}">
+          <StackPanel Spacing="3">
+            <TextBlock x:Name="ShellSyncBadgeText"
+                       Text="{Binding SyncIndicatorBadgeText}"
+                       FontSize="11.5"
+                       FontWeight="SemiBold"
+                       TextWrapping="Wrap"
+                       Foreground="{StaticResource SteadyCyanInkBrush}" />
+            <TextBlock x:Name="ShellSyncDetailText"
+                       Classes="telemetry-num"
+                       FontSize="11"
+                       Foreground="{StaticResource InkBrush}"
+                       Text="{Binding SyncIndicatorDetailText}"
+                       TextTrimming="CharacterEllipsis" />
+          </StackPanel>
+        </Border>
+
+        <Border />
+      </DockPanel>
+    </Border>
+
+    <!-- Main Right Workspace: Sticky Patient Bar Docked Permanently Outside ScrollViewers -->
+    <DockPanel Grid.Column="1" LastChildFill="True">
+      <controls:StickyPatientBanner x:Name="StickyBanner"
+                                    DockPanel.Dock="Top"
+                                    DataContext="{Binding BannerVm}" />
+
+      <Grid Margin="20,12,20,14">
+        <Border x:Name="ShiftGridHost" IsVisible="{Binding IsShiftGridActive}">
+          <views:ShiftGridView DataContext="{Binding ShiftGridVm}" />
+        </Border>
+
+        <Border x:Name="AnalyticsHost" IsVisible="{Binding IsAnalyticsActive}">
+          <views:AnalyticsView DataContext="{Binding AnalyticsVm}" />
+        </Border>
+
+        <Border x:Name="SafetyRxHost" IsVisible="{Binding IsSafetyRxActive}">
+          <views:SafetyRxWorkbenchView DataContext="{Binding SafetyRxVm}" />
+        </Border>
+
+        <Border x:Name="SyncMonitorHost" IsVisible="{Binding IsSyncMonitorActive}">
+          <views:SyncMonitorView DataContext="{Binding SyncMonitorVm}" />
+        </Border>
+      </Grid>
+    </DockPanel>
+  </Grid>
+</Window>

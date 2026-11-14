@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="NephroEdge.Desktop/NephroEdge.Desktop.csproj" />
+  <Project Path="NephroEdge.Desktop.HeadlessTests/NephroEdge.Desktop.HeadlessTests.csproj" />
+  <Project Path="../backend/Persistence_Unit/Persistence_Unit.csproj" />
+  <Project Path="../backend/Middleware_Unit/Middleware_Unit.csproj" />
+  <Project Path="../backend/Services_Unit/Services_Unit.csproj" />
+</Solution>
