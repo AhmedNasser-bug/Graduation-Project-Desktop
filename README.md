@@ -1,5 +1,6 @@
 # NephroGuard — Clinic Workstation Desktop App (`Graduation-Project-Desktop`)
 
+> **Latest Windows Release (No `.NET SDK` Needed):** [**Download `NephroGuard-Desktop-v0.2.2.0-win-x64.zip`**](https://github.com/AhmedNasser-bug/Graduation-Project-Desktop/releases/tag/v0.2.2.0)  
 > **Platform Hub & Landing Portal:** [`AhmedNasser-bug/Grad_project_landing`](https://github.com/AhmedNasser-bug/Grad_project_landing)  
 > **Related Repositories:**  
 > - **Bedside Mobile App:** [`AhmedNasser-bug/Graduation-Project-Mobile`](https://github.com/AhmedNasser-bug/Graduation-Project-Mobile)  
@@ -7,6 +8,37 @@
 > - **Master Documentation Hub:** [`xByteA/Graduation-Project-Documentation`](https://github.com/xByteA/Graduation-Project-Documentation)
 
 Cross-platform **.NET 9 + Avalonia UI 11** clinical workstation running in-process Scoped DI against `Services_Unit` and `Persistence_Unit` (SQLite WAL + LiteDB + Mendeley 12,404-session cohort).
+
+---
+
+## Interactive Walkthrough
+
+![NephroGuard Desktop Clinical Walkthrough](docs/media/nephroguard-desktop-walkthrough.gif)
+
+<sub>Walkthrough captures all 4 tabs & above-the-fold layout (`1366x820`) · [Watch/download crisp H.264 MP4](https://github.com/AhmedNasser-bug/Graduation-Project-Desktop/releases/download/v0.2.2.0/nephroguard-desktop-walkthrough.mp4)</sub>
+
+### Clinical Screens Overview
+
+| Active Shift Grid (`ShiftGridView`) | Blood Labs & Panic Alerts (`AnalyticsView`) |
+| :---: | :---: |
+| ![Active Dialysis Shift Grid](docs/media/shift-grid.png) | ![Blood Labs & Interactive Tooltip](docs/media/patient-trends-labs.png) |
+| **Longitudinal `spKt/V` & Nadir BP** | **Orders & Safety (`SafetyRxWorkbenchView`)** |
+| ![Longitudinal Sessions and Kt/V](docs/media/patient-trends-sessions.png) | ![Orders Safety and Nurse Sync](docs/media/orders-safety.png) |
+
+<details>
+<summary>View Sync & 409 Conflict Resolution Screenshot</summary>
+
+![Closed-Loop Nurse Sync and 409 Conflict Review](docs/media/nurse-sync.png)
+
+</details>
+
+---
+
+## Option 0 — Portable Windows `.zip` (Fastest — Zero SDK Install)
+
+1. Download **`NephroGuard-Desktop-v0.2.2.0-win-x64.zip`** from [**GitHub Releases**](https://github.com/AhmedNasser-bug/Graduation-Project-Desktop/releases/tag/v0.2.2.0).
+2. Extract anywhere on Windows 10/11 (`x64`) and double-click **`NephroEdge.Desktop.exe`**.
+3. On first launch, it initializes the bundled SQLite WAL + LiteDB stores and auto-seeds the Mendeley clinical shift cohort (`%LOCALAPPDATA%\NephroEdge`).
 
 ---
 
