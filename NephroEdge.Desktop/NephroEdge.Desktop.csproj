@@ -17,6 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\backend\Tests_Unit\Test_Data\7kmtsmsgfw-1\dataset_11.csv.zip"
+          Link="Tests_Unit\Test_Data\7kmtsmsgfw-1\dataset_11.csv.zip"
+          CopyToOutputDirectory="PreserveNewest"
+          Condition="Exists('..\..\backend\Tests_Unit\Test_Data\7kmtsmsgfw-1\dataset_11.csv.zip')" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.23" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.23" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.23" />

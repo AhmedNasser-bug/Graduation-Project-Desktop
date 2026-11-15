@@ -2,6 +2,13 @@
 
 All notable changes to the NephroEdge Clinic Workstation Desktop (`Graduation-Project-Desktop`) are documented in this file.
 
+## [0.2.2.0] - 2026-11-15
+
+### Added
+- Animated multi-screen walkthrough GIF (`docs/media/nephroguard-desktop-walkthrough.gif`) and full-resolution screenshots (`docs/media/*.png`) pinned at the top of `README.md`.
+- Bundled `Tests_Unit/Test_Data/7kmtsmsgfw-1/dataset_11.csv.zip` automatically into `NephroEdge.Desktop.csproj` build/publish outputs so standalone Windows `.zip` releases initialize SQLite WAL stores without requiring a sibling `backend/` checkout.
+- Portable self-contained Windows `x64` binary package (`NephroGuard-Desktop-v0.2.2.0-win-x64.zip`) published to GitHub Releases (`v0.2.2.0`).
+
 ## [0.2.1.0] - 2026-11-15
 
 ### Added
